@@ -1,4 +1,4 @@
-package com.hotel.checkin.config;
+package com.hotel.consumos.config;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
 
@@ -9,9 +9,9 @@ public class SwaggerConfig {
     public OpenAPI customOpenAPI() {
         return new OpenAPI()
                 .info(new Info()
-                        .title("Hotel Check-in API")
+                        .title("Hotel Consumos API")
                         .version("1.0")
-                        .description("API para gestionar el proceso de check-in en un hotel"));
+                        .description("API para gestionar los consumos de los huéspedes en el hotel"));
     }
 
 }
