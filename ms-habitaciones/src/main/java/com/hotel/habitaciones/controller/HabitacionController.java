@@ -16,18 +16,21 @@ import java.util.List; // Lista para endpoints que devuelven múltiples habitaci
 @RestController // Indica que todos los métodos devuelven JSON (REST)
 @RequestMapping("/api/habitaciones") // Ruta base para todos los endpoints de habitaciones
 @RequiredArgsConstructor // Inyecta el servicio por constructor sin necesidad de @Autowired
+@Tag(name = "Habitación", description = "Controlador REST para la gestión de habitaciones del hotel") // Documentación OpenAPI
 public class HabitacionController {
 
     private final HabitacionService habitacionService; // Servicio de lógica de negocio
 
     // GET /api/habitaciones → 200 OK con todo el catálogo de habitaciones
     @GetMapping // Mapea peticiones GET sin ruta adicional
+    @Operation(summary = "Obtener todas las habitaciones", description = "Retorna una lista de todas las habitaciones registradas en el hotel") // Documentación OpenAPI
     public ResponseEntity<List<HabitacionResponseDTO>> obtenerTodas() {
         return ResponseEntity.ok(habitacionService.obtenerTodas()); // 200 con catálogo completo
     }
 
     // GET /api/habitaciones/{id} → 200 OK si existe, 404 si no
     @GetMapping("/{id}") // Mapea GET /api/habitaciones/{id}
+    @Operation(summary = "Obtener habitación por ID", description = "Retorna una habitación específica según su ID") // Documentación OpenAPI
     public ResponseEntity<HabitacionResponseDTO> obtenerPorId(@PathVariable Long id) {
         return habitacionService.obtenerPorId(id) // Busca por id en la base de datos
                 .map(ResponseEntity::ok)                    // 200 con los datos de la habitación
@@ -36,12 +39,14 @@ public class HabitacionController {
 
     // POST /api/habitaciones → 201 Created con la habitación creada
     @PostMapping // Mapea peticiones POST a la URL base
+    @Operation(summary = "Crear nueva habitación", description = "Registra una nueva habitación en el sistema con los datos proporcionados") // Documentación OpenAPI
     public ResponseEntity<HabitacionResponseDTO> crear(@Valid @RequestBody HabitacionRequestDTO dto) {
         return ResponseEntity.status(201).body(habitacionService.guardar(dto)); // 201 con recurso creado
     }
 
     // PUT /api/habitaciones/{id} → 200 OK actualizado o 404
     @PutMapping("/{id}") // Mapea PUT /api/habitaciones/{id}
+    @Operation(summary = "Actualizar habitación", description = "Actualiza los datos de una habitación existente según su ID") // Documentación OpenAPI
     public ResponseEntity<HabitacionResponseDTO> actualizar(
             @PathVariable Long id, // ID de la habitación a actualizar
             @Valid @RequestBody HabitacionRequestDTO dto) { // Body validado
@@ -52,6 +57,7 @@ public class HabitacionController {
 
     // DELETE /api/habitaciones/{id} → 204 No Content o 404
     @DeleteMapping("/{id}") // Mapea DELETE /api/habitaciones/{id}
+    @Operation(summary = "Eliminar habitación", description = "Elimina una habitación del sistema según su ID") // Documentación OpenAPI
     public ResponseEntity<Void> eliminar(@PathVariable Long id) {
         if (habitacionService.obtenerPorId(id).isEmpty()) { // Verifica si existe
             return ResponseEntity.notFound().build(); // 404 si no existe la habitación
@@ -62,24 +68,28 @@ public class HabitacionController {
 
     // GET /api/habitaciones/estado/DISPONIBLE → filtra por estado
     @GetMapping("/estado/{estado}") // Mapea GET con path variable del estado
+    @Operation(summary = "Buscar habitaciones por estado", description = "Retorna una lista de habitaciones que coinciden con un estado específico (DISPONIBLE, OCUPADA, MANTENIMIENTO)") // Documentación OpenAPI
     public ResponseEntity<List<HabitacionResponseDTO>> buscarPorEstado(@PathVariable String estado) {
         return ResponseEntity.ok(habitacionService.buscarPorEstado(estado)); // 200 con lista filtrada
     }
 
     // GET /api/habitaciones/tipo/SUITE → filtra por tipo de habitación
     @GetMapping("/tipo/{tipo}") // Mapea GET con path variable del tipo
+    @Operation(summary = "Buscar habitaciones por tipo", description = "Retorna una lista de habitaciones que coinciden con un tipo específico (SIMPLE, DOBLE, SUITE)") // Documentación OpenAPI
     public ResponseEntity<List<HabitacionResponseDTO>> buscarPorTipo(@PathVariable String tipo) {
         return ResponseEntity.ok(habitacionService.buscarPorTipo(tipo)); // 200 con lista filtrada
     }
 
     // GET /api/habitaciones/disponibles/tipo/DOBLE → disponibles de un tipo (JPQL)
     @GetMapping("/disponibles/tipo/{tipo}") // Mapea GET para disponibles de un tipo
+    @Operation(summary = "Buscar habitaciones disponibles por tipo", description = "Retorna una lista de habitaciones disponibles que coinciden con un tipo específico (SIMPLE, DOBLE, SUITE)") // Documentación OpenAPI
     public ResponseEntity<List<HabitacionResponseDTO>> buscarDisponiblesPorTipo(@PathVariable String tipo) {
         return ResponseEntity.ok(habitacionService.buscarDisponiblesPorTipo(tipo)); // 200 con JPQL
     }
 
     // GET /api/habitaciones/precio?min=50.00&max=200.00 → filtra por rango de precio (JPQL)
     @GetMapping("/precio") // Mapea GET /api/habitaciones/precio con parámetros de consulta
+    @Operation(summary = "Buscar habitaciones por rango de precio", description = "Retorna una lista de habitaciones cuyo precio se encuentra dentro de un rango específico definido por los parámetros min y max") // Documentación OpenAPI
     public ResponseEntity<List<HabitacionResponseDTO>> buscarPorPrecio(
             @RequestParam BigDecimal min, // Precio mínimo del rango
             @RequestParam BigDecimal max) { // Precio máximo del rango
@@ -88,6 +98,7 @@ public class HabitacionController {
 
     // GET /api/habitaciones/disponibles → todas las disponibles ordenadas por precio (SQL nativo)
     @GetMapping("/disponibles") // Mapea GET /api/habitaciones/disponibles
+    @Operation(summary = "Obtener habitaciones disponibles", description = "Retorna una lista de habitaciones disponibles ordenadas por precio") // Documentación OpenAPI
     public ResponseEntity<List<HabitacionResponseDTO>> obtenerDisponibles() {
         return ResponseEntity.ok(habitacionService.obtenerDisponiblesOrdenadas()); // 200 con SQL nativo
     }
