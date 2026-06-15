@@ -4,6 +4,9 @@ package com.hotel.checkin.controller;
 import com.hotel.checkin.dto.CheckInRequestDTO; // DTO de entrada validado para el body
 import com.hotel.checkin.dto.CheckInResponseDTO; // DTO de salida para la respuesta JSON
 import com.hotel.checkin.service.CheckInService; // Servicio con la lógica de check-in
+
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid; // Activa las validaciones del RequestDTO
 import lombok.RequiredArgsConstructor; // Genera constructor de inyección del servicio
 import org.springframework.http.ResponseEntity; // Controla el código HTTP de respuesta

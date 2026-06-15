@@ -5,6 +5,9 @@ package com.hotel.clientes.controller;
 import com.hotel.clientes.dto.ClienteRequestDTO;
 import com.hotel.clientes.dto.ClienteResponseDTO;
 import com.hotel.clientes.service.ClienteService;
+
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 // @Valid activa las validaciones del RequestDTO (se integra con Spring Boot Validation)
 import jakarta.validation.Valid;
 // @RequiredArgsConstructor genera el constructor que inyecta el servicio

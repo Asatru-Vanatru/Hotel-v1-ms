@@ -4,6 +4,9 @@ package com.hotel.habitaciones.controller;
 import com.hotel.habitaciones.dto.HabitacionRequestDTO; // DTO de entrada para el body
 import com.hotel.habitaciones.dto.HabitacionResponseDTO; // DTO de salida para la respuesta
 import com.hotel.habitaciones.service.HabitacionService; // Servicio con la lógica de negocio
+
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid; // Activa la validación del RequestDTO
 import lombok.RequiredArgsConstructor; // Genera constructor de inyección del servicio
 import org.springframework.http.ResponseEntity; // Permite controlar el código HTTP de respuesta

@@ -4,6 +4,9 @@ package com.hotel.empleados.controller;
 import com.hotel.empleados.dto.EmpleadoRequestDTO; // DTO de entrada validado para el body
 import com.hotel.empleados.dto.EmpleadoResponseDTO; // DTO de salida para la respuesta JSON
 import com.hotel.empleados.service.EmpleadoService; // Servicio con la lógica de empleados
+
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid; // Activa las validaciones del RequestDTO
 import lombok.RequiredArgsConstructor; // Genera constructor de inyección del servicio
 import org.springframework.http.ResponseEntity; // Controla el código HTTP de respuesta

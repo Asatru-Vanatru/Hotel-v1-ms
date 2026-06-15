@@ -4,6 +4,9 @@ package com.hotel.mantenimiento.controller;
 import com.hotel.mantenimiento.dto.MantenimientoRequestDTO; // DTO de entrada validado
 import com.hotel.mantenimiento.dto.MantenimientoResponseDTO; // DTO de salida para la respuesta
 import com.hotel.mantenimiento.service.MantenimientoService; // Servicio con la lógica de mantenimiento
+
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid; // Activa las validaciones del RequestDTO
 import lombok.RequiredArgsConstructor; // Genera constructor de inyección del servicio
 import org.springframework.http.ResponseEntity; // Controla el código HTTP de respuesta
