@@ -4,7 +4,8 @@ package com.hotel.checkin.repository;
 import com.hotel.checkin.model.CheckIn; // Entidad que este repositorio gestiona
 import org.springframework.data.jpa.repository.JpaRepository; // Interfaz base con CRUD completo
 import org.springframework.data.jpa.repository.Query; // Para consultas personalizadas
-//import org.springframework.data.repository.query.Param; // Enlaza parámetros en @Query
+import org.springframework.data.repository.query.Param; // Enlaza parámetros en @Query
+import java.time.LocalDate; // Para buscar por fecha exacta (sin hora)
 import java.time.LocalDateTime; // Tipo para buscar por rango de fecha/hora de check-in
 import java.util.List; // Lista para resultados múltiples
 import java.util.Optional; // Encapsula resultado único que puede no existir
@@ -29,6 +30,25 @@ public interface CheckInRepository extends JpaRepository<CheckIn, Long> {
     // → SELECT * FROM checkins WHERE fecha_hora_check_in BETWEEN ? AND ?
     // Busca check-ins realizados en un período de tiempo específico
     List<CheckIn> findByFechaHoraCheckInBetween(LocalDateTime inicio, LocalDateTime fin);
+
+
+    // ── MÉTODOS PERSONALIZADOS V2 ────────────────────────────────────────────
+
+    // 1. Check-ins de un cliente en una fecha específica (extrae solo la parte DATE)
+    @Query("SELECT c FROM CheckIn c WHERE c.clienteId = :clienteId AND CAST(c.fechaHoraCheckIn AS date) = :fecha")
+    List<CheckIn> findByClienteIdAndFecha(@Param("clienteId") Long clienteId, @Param("fecha") LocalDate fecha);
+
+    // 2. Check-ins de una habitación realizados por un cliente específico
+    List<CheckIn> findByHabitacionIdAndClienteId(Long habitacionId, Long clienteId);
+
+    // 3. Check-ins de un cliente entre dos fechas
+    List<CheckIn> findByClienteIdAndFechaHoraCheckInBetween(Long clienteId, LocalDateTime inicio, LocalDateTime fin);
+
+    // 4. Check-ins de una habitación entre dos fechas
+    List<CheckIn> findByHabitacionIdAndFechaHoraCheckInBetween(Long habitacionId, LocalDateTime inicio, LocalDateTime fin);
+
+    // 5. Total de check-ins realizados en una habitación específica
+    Long countByHabitacionId(Long habitacionId);
 
 
     // ── @QUERY JPQL ──────────────────────────────────────────────────────────

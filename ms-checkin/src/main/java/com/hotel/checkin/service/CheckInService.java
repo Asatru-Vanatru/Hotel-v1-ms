@@ -7,6 +7,8 @@ import com.hotel.checkin.model.CheckIn; // Entidad JPA de la tabla checkins
 import com.hotel.checkin.repository.CheckInRepository; // Repositorio de acceso a datos
 import lombok.RequiredArgsConstructor; // Genera constructor de inyección
 import org.springframework.stereotype.Service; // Marca como componente de servicio Spring
+import java.time.LocalDate; // Para filtrar por fecha exacta
+import java.time.LocalDateTime; // Para filtrar por rango de fechas
 import java.util.List; // Lista para múltiples check-ins
 import java.util.Optional; // Encapsula resultado que puede no existir
 import java.util.stream.Collectors; // Para coleccionar Streams
@@ -45,6 +47,49 @@ public class CheckInService {
     // Obtiene todos los registros de check-in
     public List<CheckInResponseDTO> obtenerTodos() {
         return checkInRepository.findAll().stream().map(this::mapToDTO).collect(Collectors.toList()); // Lista completa
+    }
+
+    // Obtiene todos los registros como entidades (para HATEOAS en V2)
+    public List<CheckIn> obtenerTodosEntidades() {
+        return checkInRepository.findAll();
+    }
+
+    // Obtiene una entidad por id (para HATEOAS en V2)
+    public CheckIn obtenerEntidadPorId(Long id) {
+        return checkInRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("CheckIn no encontrado: " + id));
+    }
+
+    // Guarda una entidad directamente (para HATEOAS en V2)
+    public CheckIn guardar(CheckIn checkIn) {
+        return checkInRepository.save(checkIn);
+    }
+
+    // ── MÉTODOS PERSONALIZADOS V2 ────────────────────────────────────────────
+
+    // 1. Check-ins de un cliente en una fecha específica
+    public List<CheckIn> findCheckInsByClienteYFecha(Long clienteId, LocalDate fecha) {
+        return checkInRepository.findByClienteIdAndFecha(clienteId, fecha);
+    }
+
+    // 2. Check-ins de una habitación realizados por un cliente específico
+    public List<CheckIn> findCheckInsByHabitacionYCliente(Long habitacionId, Long clienteId) {
+        return checkInRepository.findByHabitacionIdAndClienteId(habitacionId, clienteId);
+    }
+
+    // 3. Check-ins de un cliente entre dos fechas
+    public List<CheckIn> findCheckInsByClienteEntreFechas(Long clienteId, LocalDateTime inicio, LocalDateTime fin) {
+        return checkInRepository.findByClienteIdAndFechaHoraCheckInBetween(clienteId, inicio, fin);
+    }
+
+    // 4. Check-ins de una habitación entre dos fechas
+    public List<CheckIn> findCheckInsByHabitacionEntreFechas(Long habitacionId, LocalDateTime inicio, LocalDateTime fin) {
+        return checkInRepository.findByHabitacionIdAndFechaHoraCheckInBetween(habitacionId, inicio, fin);
+    }
+
+    // 5. Total de check-ins en una habitación específica
+    public Long contarCheckInsPorHabitacion(Long habitacionId) {
+        return checkInRepository.countByHabitacionId(habitacionId);
     }
 
     // Obtiene un check-in por id
