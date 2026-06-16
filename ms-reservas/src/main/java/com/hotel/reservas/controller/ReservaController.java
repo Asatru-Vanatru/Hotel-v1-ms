@@ -4,6 +4,9 @@ package com.hotel.reservas.controller;
 import com.hotel.reservas.dto.ReservaRequestDTO; // DTO de entrada validado para el body
 import com.hotel.reservas.dto.ReservaResponseDTO; // DTO de salida para la respuesta JSON
 import com.hotel.reservas.service.ReservaService; // Servicio con la lógica de negocio
+
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid; // Activa las validaciones del RequestDTO
 import lombok.RequiredArgsConstructor; // Genera constructor de inyección
 import org.springframework.http.ResponseEntity; // Controla el código HTTP de la respuesta
@@ -15,18 +18,21 @@ import java.util.List; // Lista para endpoints con múltiples reservas
 @RestController // Todos los métodos devuelven JSON automáticamente
 @RequestMapping("/api/reservas") // Ruta raíz de todos los endpoints de reservas
 @RequiredArgsConstructor // Inyección por constructor del servicio
+@Tag(name = "Reservas", description = "Endpoints para gestionar reservas del hotel") // Documentación Swagger
 public class ReservaController {
 
     private final ReservaService reservaService; // Servicio de lógica de negocio de reservas
 
     // GET /api/reservas → 200 con lista completa de reservas
     @GetMapping // Mapea GET sin ruta adicional
+    @Operation(summary = "Obtener todas las reservas", description = "Devuelve una lista completa de todas las reservas del hotel") // Documentación Swagger
     public ResponseEntity<List<ReservaResponseDTO>> obtenerTodas() {
         return ResponseEntity.ok(reservaService.obtenerTodas()); // 200 con lista completa
     }
 
     // GET /api/reservas/{id} → 200 OK o 404 Not Found
     @GetMapping("/{id}") // Mapea GET /api/reservas/{id}
+    @Operation(summary = "Obtener reserva por ID", description = "Devuelve los detalles de una reserva específica por su ID") // Documentación Swagger
     public ResponseEntity<ReservaResponseDTO> obtenerPorId(@PathVariable Long id) {
         return reservaService.obtenerPorId(id) // Busca la reserva por id
                 .map(ResponseEntity::ok)                    // 200 con los datos de la reserva
@@ -35,12 +41,14 @@ public class ReservaController {
 
     // POST /api/reservas → 201 Created con la reserva creada (total calculado)
     @PostMapping // Mapea POST a la URL base de reservas
+    @Operation(summary = "Crear nueva reserva", description = "Crea una nueva reserva con los datos proporcionados y devuelve la reserva creada con el total calculado") // Documentación Swagger
     public ResponseEntity<ReservaResponseDTO> crear(@Valid @RequestBody ReservaRequestDTO dto) {
         return ResponseEntity.status(201).body(reservaService.guardar(dto)); // 201 con total calculado
     }
 
     // PUT /api/reservas/{id} → 200 OK actualizado o 404
     @PutMapping("/{id}") // Mapea PUT /api/reservas/{id}
+    @Operation(summary = "Actualizar reserva existente", description = "Actualiza los datos de una reserva existente por su ID y devuelve la reserva actualizada con el total recalculado") // Documentación Swagger
     public ResponseEntity<ReservaResponseDTO> actualizar(
             @PathVariable Long id, // ID de la reserva a actualizar
             @Valid @RequestBody ReservaRequestDTO dto) { // Body validado con @Valid
@@ -51,6 +59,7 @@ public class ReservaController {
 
     // DELETE /api/reservas/{id} → 204 No Content o 404
     @DeleteMapping("/{id}") // Mapea DELETE /api/reservas/{id}
+    @Operation(summary = "Eliminar reserva", description = "Cancela y elimina una reserva existente por su ID") // Documentación Swagger
     public ResponseEntity<Void> eliminar(@PathVariable Long id) {
         if (reservaService.obtenerPorId(id).isEmpty()) { // Verifica si la reserva existe
             return ResponseEntity.notFound().build(); // 404 si no existe la reserva
@@ -61,24 +70,28 @@ public class ReservaController {
 
     // GET /api/reservas/cliente/{clienteId} → historial de reservas de un cliente
     @GetMapping("/cliente/{clienteId}") // Mapea GET /api/reservas/cliente/{id}
+    @Operation(summary = "Historial de reservas por cliente", description = "Devuelve el historial completo de reservas realizadas por un cliente específico") // Documentación Swagger
     public ResponseEntity<List<ReservaResponseDTO>> buscarPorCliente(@PathVariable Long clienteId) {
         return ResponseEntity.ok(reservaService.buscarPorCliente(clienteId)); // 200 con historial
     }
 
     // GET /api/reservas/estado/CONFIRMADA → filtra reservas por estado
     @GetMapping("/estado/{estado}") // Mapea GET /api/reservas/estado/{valor}
+    @Operation(summary = "Filtrar reservas por estado", description = "Devuelve una lista de reservas filtradas por su estado (e.g., CONFIRMADA, CANCELADA)") // Documentación Swagger
     public ResponseEntity<List<ReservaResponseDTO>> buscarPorEstado(@PathVariable String estado) {
         return ResponseEntity.ok(reservaService.buscarPorEstado(estado)); // 200 con lista filtrada
     }
 
     // GET /api/reservas/proximas-llegadas → próximas reservas confirmadas (JPQL ORDER BY)
     @GetMapping("/proximas-llegadas") // Mapea GET /api/reservas/proximas-llegadas
+    @Operation(summary = "Próximas llegadas confirmadas", description = "Devuelve una lista de las próximas reservas confirmadas ordenadas por fecha de llegada") // Documentación Swagger
     public ResponseEntity<List<ReservaResponseDTO>> obtenerProximasLlegadas() {
         return ResponseEntity.ok(reservaService.obtenerProximasLlegadas()); // 200 con JPQL
     }
 
     // GET /api/reservas/cliente/{clienteId}/noches → total noches del cliente (SQL nativo)
     @GetMapping("/cliente/{clienteId}/noches") // Mapea GET para calcular noches del cliente
+    @Operation(summary = "Calcular total noches por cliente", description = "Devuelve el total de noches reservadas por un cliente específico utilizando una consulta SQL nativa") // Documentación Swagger
     public ResponseEntity<Long> calcularNochesCliente(@PathVariable Long clienteId) {
         return ResponseEntity.ok(reservaService.calcularNochesCliente(clienteId)); // 200 con total noches
     }
