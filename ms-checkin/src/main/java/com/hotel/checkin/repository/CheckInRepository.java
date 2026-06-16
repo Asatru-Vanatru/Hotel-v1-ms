@@ -4,7 +4,7 @@ package com.hotel.checkin.repository;
 import com.hotel.checkin.model.CheckIn; // Entidad que este repositorio gestiona
 import org.springframework.data.jpa.repository.JpaRepository; // Interfaz base con CRUD completo
 import org.springframework.data.jpa.repository.Query; // Para consultas personalizadas
-import org.springframework.data.repository.query.Param; // Enlaza parámetros en @Query
+//import org.springframework.data.repository.query.Param; // Enlaza parámetros en @Query
 import java.time.LocalDateTime; // Tipo para buscar por rango de fecha/hora de check-in
 import java.util.List; // Lista para resultados múltiples
 import java.util.Optional; // Encapsula resultado único que puede no existir

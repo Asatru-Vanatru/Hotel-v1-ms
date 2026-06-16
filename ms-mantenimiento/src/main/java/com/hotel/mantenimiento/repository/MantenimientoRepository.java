@@ -4,7 +4,7 @@ package com.hotel.mantenimiento.repository;
 import com.hotel.mantenimiento.model.Mantenimiento; // Entidad de solicitudes de mantenimiento
 import org.springframework.data.jpa.repository.JpaRepository; // Interfaz base con CRUD
 import org.springframework.data.jpa.repository.Query; // Para consultas personalizadas
-import org.springframework.data.repository.query.Param; // Enlaza parámetros en @Query
+//mport org.springframework.data.repository.query.Param; // Enlaza parámetros en @Query
 import java.time.LocalDate; // Tipo para filtrar por fechas de solicitud
 import java.util.List; // Lista para múltiples solicitudes de mantenimiento
 

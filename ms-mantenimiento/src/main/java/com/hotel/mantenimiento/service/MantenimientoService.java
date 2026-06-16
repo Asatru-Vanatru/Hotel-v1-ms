@@ -7,7 +7,7 @@ import com.hotel.mantenimiento.model.Mantenimiento; // Entidad JPA de la tabla m
 import com.hotel.mantenimiento.repository.MantenimientoRepository; // Repositorio de acceso a datos
 import lombok.RequiredArgsConstructor; // Genera constructor de inyección de dependencias
 import org.springframework.stereotype.Service; // Marca como componente de servicio Spring
-import java.time.LocalDate; // Tipo para filtrar por fechas de solicitud
+//import java.time.LocalDate; // Tipo para filtrar por fechas de solicitud
 import java.util.List; // Lista para múltiples solicitudes
 import java.util.Optional; // Encapsula resultado que puede no existir
 import java.util.stream.Collectors; // Para coleccionar Streams
