@@ -16,18 +16,21 @@ import java.util.List; // Lista para endpoints que devuelven múltiples servicio
 @RestController // Todos los métodos retornan JSON automáticamente
 @RequestMapping("/api/servicios") // Ruta base del catálogo de servicios adicionales
 @RequiredArgsConstructor // Inyecta el servicio por constructor
+@Tag(name = "Servicios", description = "Endpoints para gestionar el catálogo de servicios adicionales del hotel") // Documentación Swagger
 public class ServicioController {
 
     private final ServicioService servicioService; // Servicio de lógica del catálogo de servicios
 
     // GET /api/servicios → 200 con el catálogo completo
     @GetMapping // Mapea GET a la URL base del catálogo
+    @Operation(summary = "Obtener todos los servicios", description = "Devuelve el catálogo completo de servicios adicionales del hotel") // Documentación Swagger
     public ResponseEntity<List<ServicioResponseDTO>> obtenerTodos() {
         return ResponseEntity.ok(servicioService.obtenerTodos()); // 200 con catálogo completo
     }
 
     // GET /api/servicios/{id} → 200 OK o 404 Not Found
     @GetMapping("/{id}") // Mapea GET /api/servicios/{id}
+    @Operation(summary = "Obtener un servicio por ID", description = "Devuelve un servicio específico del catálogo por su ID") // Documentación Swagger
     public ResponseEntity<ServicioResponseDTO> obtenerPorId(@PathVariable Long id) {
         return servicioService.obtenerPorId(id) // Busca el servicio por id
                 .map(ResponseEntity::ok)
@@ -36,12 +39,14 @@ public class ServicioController {
 
     // POST /api/servicios → 201 Created con el servicio creado
     @PostMapping // Mapea POST para agregar un servicio al catálogo
+    @Operation(summary = "Crear un nuevo servicio", description = "Agrega un nuevo servicio al catálogo de servicios adicionales") // Documentación Swagger
     public ResponseEntity<ServicioResponseDTO> crear(@Valid @RequestBody ServicioRequestDTO dto) {
         return ResponseEntity.status(201).body(servicioService.guardar(dto)); // 201 con nuevo servicio
     }
 
     // PUT /api/servicios/{id} → 200 OK actualizado o 404
     @PutMapping("/{id}") // Mapea PUT /api/servicios/{id}
+    @Operation(summary = "Actualizar un servicio", description = "Actualiza un servicio existente en el catálogo") // Documentación Swagger
     public ResponseEntity<ServicioResponseDTO> actualizar(
             @PathVariable Long id, // ID del servicio a actualizar
             @Valid @RequestBody ServicioRequestDTO dto) { // Body validado
@@ -52,6 +57,7 @@ public class ServicioController {
 
     // DELETE /api/servicios/{id} → 204 No Content o 404
     @DeleteMapping("/{id}") // Mapea DELETE /api/servicios/{id}
+    @Operation(summary = "Eliminar un servicio", description = "Elimina un servicio del catálogo de servicios adicionales") // Documentación Swagger
     public ResponseEntity<Void> eliminar(@PathVariable Long id) {
         if (servicioService.obtenerPorId(id).isEmpty()) { // Verifica si el servicio existe
             return ResponseEntity.notFound().build(); // 404 si no existe
@@ -62,24 +68,28 @@ public class ServicioController {
 
     // GET /api/servicios/categoria/SPA → filtra por categoría del servicio
     @GetMapping("/categoria/{categoria}") // Mapea GET /api/servicios/categoria/{nombre}
+    @Operation(summary = "Buscar servicios por categoría", description = "Devuelve los servicios que pertenecen a una categoría específica") // Documentación Swagger
     public ResponseEntity<List<ServicioResponseDTO>> buscarPorCategoria(@PathVariable String categoria) {
         return ResponseEntity.ok(servicioService.buscarPorCategoria(categoria)); // 200 filtrado
     }
 
     // GET /api/servicios/disponibles → solo los servicios activos del catálogo
     @GetMapping("/disponibles") // Mapea GET /api/servicios/disponibles
+    @Operation(summary = "Buscar servicios disponibles", description = "Devuelve los servicios que están disponibles en el catálogo") // Documentación Swagger
     public ResponseEntity<List<ServicioResponseDTO>> buscarDisponibles() {
         return ResponseEntity.ok(servicioService.buscarPorDisponibilidad(true)); // 200 con disponibles
     }
 
     // GET /api/servicios/precio?max=50.00 → servicios hasta un precio máximo (JPQL)
     @GetMapping("/precio") // Mapea GET /api/servicios/precio con parámetro max
+    @Operation(summary = "Buscar servicios por precio", description = "Devuelve los servicios que tienen un precio hasta un máximo específico") // Documentación Swagger
     public ResponseEntity<List<ServicioResponseDTO>> buscarHastaPrecio(@RequestParam BigDecimal max) {
         return ResponseEntity.ok(servicioService.buscarHastaPrecio(max)); // 200 con JPQL
     }
 
     // GET /api/servicios/catalogo → catálogo disponible ordenado (SQL nativo)
     @GetMapping("/catalogo") // Mapea GET /api/servicios/catalogo para la vista de recepción
+    @Operation(summary = "Obtener el catálogo de servicios", description = "Devuelve el catálogo completo de servicios adicionales del hotel, ordenado") // Documentación Swagger
     public ResponseEntity<List<ServicioResponseDTO>> obtenerCatalogo() {
         return ResponseEntity.ok(servicioService.obtenerCatalogoOrdenado()); // 200 con SQL nativo
     }
