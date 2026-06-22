@@ -95,4 +95,22 @@ public class ServicioService {
         return servicioRepository.findCatalogoDisponibleOrdenado().stream().map(this::mapToDTO).collect(Collectors.toList()); // SQL nativo
     }
 
+    // ── MÉTODOS ENTIDAD PARA HATEOAS (V2) ───────────────────────────────────
+
+    public List<Servicio> findAll() {
+        return servicioRepository.findAll();
+    }
+
+    public Optional<Servicio> findById(Long id) {
+        return servicioRepository.findById(id);
+    }
+
+    public Servicio save(Servicio servicio) {
+        return servicioRepository.save(servicio);
+    }
+
+    public void deleteById(Long id) {
+        servicioRepository.deleteById(id);
+    }
+
 }
