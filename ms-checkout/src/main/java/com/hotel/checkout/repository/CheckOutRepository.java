@@ -4,7 +4,7 @@ package com.hotel.checkout.repository;
 import com.hotel.checkout.model.CheckOut; // Entidad que este repositorio gestiona
 import org.springframework.data.jpa.repository.JpaRepository; // Interfaz base con operaciones CRUD
 import org.springframework.data.jpa.repository.Query; // Para consultas personalizadas
-import org.springframework.data.repository.query.Param; // Enlaza parámetros en @Query
+//import org.springframework.data.repository.query.Param; // Enlaza parámetros en @Query
 import java.math.BigDecimal; // Tipo para el total de ingresos en consultas agregadas
 import java.util.List; // Lista para múltiples resultados
 import java.util.Optional; // Encapsula resultado único que puede no existir

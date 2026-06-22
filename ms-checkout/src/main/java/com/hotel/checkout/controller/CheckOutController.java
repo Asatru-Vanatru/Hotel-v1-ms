@@ -4,6 +4,9 @@ package com.hotel.checkout.controller;
 import com.hotel.checkout.dto.CheckOutRequestDTO; // DTO de entrada validado
 import com.hotel.checkout.dto.CheckOutResponseDTO; // DTO de salida para la respuesta JSON
 import com.hotel.checkout.service.CheckOutService; // Servicio con la lógica de check-out
+
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid; // Activa las validaciones del RequestDTO con @Valid
 import lombok.RequiredArgsConstructor; // Genera constructor de inyección del servicio
 import org.springframework.http.ResponseEntity; // Permite devolver códigos HTTP específicos

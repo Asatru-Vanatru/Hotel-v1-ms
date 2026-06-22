@@ -93,4 +93,46 @@ public class CheckOutService {
         return checkOutRepository.calcularPromedioEstancia(); // SQL nativo con AVG
     }
 
+    // ----- Wrappers returning entities for controller V2 compatibility -----
+    public java.util.List<CheckOut> obtenerTodosEntidades() {
+        return checkOutRepository.findAll();
+    }
+
+    public CheckOut obtenerEntidadPorId(Long id) {
+        return checkOutRepository.findById(id).orElse(null);
+    }
+
+    public CheckOut registrarEntidad(CheckOut checkOut) {
+        return checkOutRepository.save(checkOut);
+    }
+
+    public CheckOut actualizarEntidad(Long id, CheckOut checkOut) {
+        return checkOutRepository.findById(id).map(existing -> {
+            existing.setReservaId(checkOut.getReservaId());
+            existing.setClienteId(checkOut.getClienteId());
+            existing.setHabitacionId(checkOut.getHabitacionId());
+            existing.setFechaHoraCheckOut(checkOut.getFechaHoraCheckOut());
+            existing.setTotalFinal(checkOut.getTotalFinal());
+            existing.setDiasEstancia(checkOut.getDiasEstancia());
+            return checkOutRepository.save(existing);
+        }).orElse(null);
+    }
+
+    public void eliminarEntidad(Long id) {
+        checkOutRepository.deleteById(id);
+    }
+
+    public BigDecimal obtenerIngresosTotales() {
+        return checkOutRepository.calcularIngresosTotales();
+    }
+
+    public BigDecimal obtenerPromedioEstancia() {
+        Double avg = checkOutRepository.calcularPromedioEstancia();
+        return (avg == null) ? BigDecimal.ZERO : BigDecimal.valueOf(avg);
+    }
+
+    public CheckOut obtenerEntidadPorReservaId(Long reservaId) {
+        return checkOutRepository.findByReservaId(reservaId).orElse(null);
+    }
+
 }

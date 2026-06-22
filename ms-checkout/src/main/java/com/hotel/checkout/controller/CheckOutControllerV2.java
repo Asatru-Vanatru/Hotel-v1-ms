@@ -1,6 +1,6 @@
 package com.hotel.checkout.controller;
 
-import com.hotel.checkout.assembler.CheckOutModelAssemblers;
+import com.hotel.checkout.assemblers.CheckOutModelAssemblers;
 import com.hotel.checkout.model.CheckOut;
 import com.hotel.checkout.service.CheckOutService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,7 +58,7 @@ public class CheckOutControllerV2 {
         return ResponseEntity.ok(entityModel);
     }
 
-    @DeleteMapping("/{id}" , produces = MediaTypes.HAL_JSON_VALUE)
+    @DeleteMapping(value = "/{id}", produces = MediaTypes.HAL_JSON_VALUE)
     public ResponseEntity<Void> eliminar(@PathVariable Long id){
         checkOutService.eliminarEntidad(id);
         return ResponseEntity.noContent().build();
