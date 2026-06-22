@@ -81,6 +81,23 @@ public class PagoService {
         pagoRepository.deleteById(id); // Borra el registro de pago de la base de datos
     }
 
+    // ── SOPORTE HATEOAS / ENTIDADES ───────────────────────────────────────────
+    public List<Pago> obtenerTodasEntidades() {
+        return pagoRepository.findAll();
+    }
+
+    public Optional<Pago> obtenerEntidadPorId(Long id) {
+        return pagoRepository.findById(id);
+    }
+
+    public Pago guardarEntidad(Pago pago) {
+        return pagoRepository.save(pago);
+    }
+
+    public void eliminarEntidad(Long id) {
+        pagoRepository.deleteById(id);
+    }
+
     // Obtiene todos los pagos de una reserva específica
     public List<PagoResponseDTO> buscarPorReserva(Long reservaId) {
         return pagoRepository.findByReservaId(reservaId).stream().map(this::mapToDTO).collect(Collectors.toList()); // Por reserva

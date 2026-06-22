@@ -108,6 +108,23 @@ public class ClienteService {
         clienteRepository.deleteById(id); // Elimina el cliente con el id dado de la base de datos
     }
 
+    // ── SOPORTE HATEOAS / ENTIDADES ───────────────────────────────────────────
+    public List<Cliente> obtenerTodasEntidades() {
+        return clienteRepository.findAll();
+    }
+
+    public Optional<Cliente> obtenerEntidadPorId(Long id) {
+        return clienteRepository.findById(id);
+    }
+
+    public Cliente guardarEntidad(Cliente cliente) {
+        return clienteRepository.save(cliente);
+    }
+
+    public void eliminarEntidad(Long id) {
+        clienteRepository.deleteById(id);
+    }
+
     // ── MÉTODOS DE BÚSQUEDA ──────────────────────────────────────────────────
     // Delegan al Repository y convierten resultados a DTOs
 

@@ -1,4 +1,16 @@
 {
     "java.compile.nullAnalysis.mode": "automatic",
-    "java.configuration.updateBuildConfiguration": "interactive"
+    "java.configuration.updateBuildConfiguration": "interactive",
+    "java.project.sourcePaths": [
+        "ms-checkin/src/main/java",
+        "ms-checkout/src/main/java",
+        "ms-clientes/src/main/java",
+        "ms-consumos/src/main/java",
+        "ms-empleados/src/main/java",
+        "ms-habitaciones/src/main/java",
+        "ms-mantenimiento/src/main/java",
+        "ms-pagos/src/main/java",
+        "ms-reservas/src/main/java",
+        "ms-servicios/src/main/java"
+    ]
 }

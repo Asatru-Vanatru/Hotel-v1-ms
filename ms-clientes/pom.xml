@@ -48,6 +48,12 @@
             <artifactId>spring-boot-starter-webmvc</artifactId>
         </dependency>
 
+        <!-- spring-boot-starter-hateoas: API HATEOAS para HAL JSON y enlaces en respuestas REST -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-hateoas</artifactId>
+        </dependency>
+
         <!-- mysql-connector-j: driver JDBC para conectar Java con el servidor MySQL -->
         <dependency>
             <groupId>com.mysql</groupId>

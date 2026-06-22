@@ -95,6 +95,23 @@ public class ReservaService {
         reservaRepository.deleteById(id); // Borra la reserva de la base de datos
     }
 
+    // ── SOPORTE HATEOAS / ENTIDADES ───────────────────────────────────────────
+    public List<Reserva> obtenerTodasEntidades() {
+        return reservaRepository.findAll();
+    }
+
+    public Optional<Reserva> obtenerEntidadPorId(Long id) {
+        return reservaRepository.findById(id);
+    }
+
+    public Reserva guardarEntidad(Reserva reserva) {
+        return reservaRepository.save(reserva);
+    }
+
+    public void eliminarEntidad(Long id) {
+        reservaRepository.deleteById(id);
+    }
+
     // Obtiene reservas de un cliente específico
     public List<ReservaResponseDTO> buscarPorCliente(Long clienteId) {
         return reservaRepository.findByClienteId(clienteId).stream().map(this::mapToDTO).collect(Collectors.toList()); // Historial del cliente

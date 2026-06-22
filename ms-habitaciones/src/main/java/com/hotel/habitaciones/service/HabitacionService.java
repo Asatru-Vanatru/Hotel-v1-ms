@@ -81,6 +81,23 @@ public class HabitacionService {
         habitacionRepository.deleteById(id); // Borra la habitación de la base de datos
     }
 
+    // ── SOPORTE HATEOAS / ENTIDADES ───────────────────────────────────────────
+    public List<Habitacion> obtenerTodasEntidades() {
+        return habitacionRepository.findAll();
+    }
+
+    public Optional<Habitacion> obtenerEntidadPorId(Long id) {
+        return habitacionRepository.findById(id);
+    }
+
+    public Habitacion guardarEntidad(Habitacion habitacion) {
+        return habitacionRepository.save(habitacion);
+    }
+
+    public void eliminarEntidad(Long id) {
+        habitacionRepository.deleteById(id);
+    }
+
     // Busca habitaciones por estado (DISPONIBLE, OCUPADA, MANTENIMIENTO, etc.)
     public List<HabitacionResponseDTO> buscarPorEstado(String estado) {
         return habitacionRepository.findByEstado(estado).stream().map(this::mapToDTO).collect(Collectors.toList()); // Filtra por estado

@@ -81,6 +81,23 @@ public class ConsumoService {
         consumoRepository.deleteById(id); // Borra el registro de consumo de la base de datos
     }
 
+    // ── SOPORTE HATEOAS / ENTIDADES ───────────────────────────────────────────
+    public List<Consumo> obtenerTodasEntidades() {
+        return consumoRepository.findAll();
+    }
+
+    public Optional<Consumo> obtenerEntidadPorId(Long id) {
+        return consumoRepository.findById(id);
+    }
+
+    public Consumo guardarEntidad(Consumo consumo) {
+        return consumoRepository.save(consumo);
+    }
+
+    public void eliminarEntidad(Long id) {
+        consumoRepository.deleteById(id);
+    }
+
     // Obtiene todos los consumos de una reserva específica
     public List<ConsumoResponseDTO> buscarPorReserva(Long reservaId) {
         return consumoRepository.findByReservaId(reservaId).stream().map(this::mapToDTO).collect(Collectors.toList()); // Por reserva

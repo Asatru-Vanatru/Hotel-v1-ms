@@ -83,6 +83,23 @@ public class EmpleadoService {
         empleadoRepository.deleteById(id); // Borra el empleado de la base de datos
     }
 
+    // ── SOPORTE HATEOAS / ENTIDADES ───────────────────────────────────────────
+    public List<Empleado> obtenerTodasEntidades() {
+        return empleadoRepository.findAll();
+    }
+
+    public Optional<Empleado> obtenerEntidadPorId(Long id) {
+        return empleadoRepository.findById(id);
+    }
+
+    public Empleado guardarEntidad(Empleado empleado) {
+        return empleadoRepository.save(empleado);
+    }
+
+    public void eliminarEntidad(Long id) {
+        empleadoRepository.deleteById(id);
+    }
+
     // Obtiene empleados de un departamento específico
     public List<EmpleadoResponseDTO> buscarPorDepartamento(String departamento) {
         return empleadoRepository.findByDepartamentoIgnoreCase(departamento).stream().map(this::mapToDTO).collect(Collectors.toList()); // Por departamento

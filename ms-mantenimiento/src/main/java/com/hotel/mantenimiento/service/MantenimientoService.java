@@ -81,6 +81,23 @@ public class MantenimientoService {
         mantenimientoRepository.deleteById(id); // Borra la solicitud de la base de datos
     }
 
+    // ── SOPORTE HATEOAS / ENTIDADES ───────────────────────────────────────────
+    public List<Mantenimiento> obtenerTodasEntidades() {
+        return mantenimientoRepository.findAll();
+    }
+
+    public Optional<Mantenimiento> obtenerEntidadPorId(Long id) {
+        return mantenimientoRepository.findById(id);
+    }
+
+    public Mantenimiento guardarEntidad(Mantenimiento mantenimiento) {
+        return mantenimientoRepository.save(mantenimiento);
+    }
+
+    public void eliminarEntidad(Long id) {
+        mantenimientoRepository.deleteById(id);
+    }
+
     // Filtra solicitudes por estado (PENDIENTE, EN_PROCESO, COMPLETADO, CANCELADO)
     public List<MantenimientoResponseDTO> buscarPorEstado(String estado) {
         return mantenimientoRepository.findByEstado(estado).stream().map(this::mapToDTO).collect(Collectors.toList()); // Por estado
