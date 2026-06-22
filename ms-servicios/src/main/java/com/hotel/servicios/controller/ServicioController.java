@@ -4,6 +4,8 @@ package com.hotel.servicios.controller;
 import com.hotel.servicios.dto.ServicioRequestDTO; // DTO de entrada validado para el body
 import com.hotel.servicios.dto.ServicioResponseDTO; // DTO de salida para la respuesta JSON
 import com.hotel.servicios.service.ServicioService; // Servicio con la lógica del catálogo
+import io.swagger.v3.oas.annotations.Operation; // Documentación Swagger para operaciones de API
+import io.swagger.v3.oas.annotations.tags.Tag; // Documentación Swagger para grupos de endpoints
 import jakarta.validation.Valid; // Activa las validaciones del RequestDTO
 import lombok.RequiredArgsConstructor; // Genera constructor de inyección del servicio
 import org.springframework.http.ResponseEntity; // Controla el código HTTP de la respuesta

@@ -34,6 +34,10 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-webmvc</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-hateoas</artifactId>
+        </dependency>
         <!-- mysql-connector-j: driver para conexión JDBC con MySQL -->
         <dependency>
             <groupId>com.mysql</groupId>
