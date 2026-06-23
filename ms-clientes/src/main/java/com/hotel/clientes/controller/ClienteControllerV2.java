@@ -43,7 +43,7 @@ public class ClienteControllerV2 {
     
     private final ClienteModelAssembler assembler;
 
-    @GetMapping(produces = MediaTypes.HAL_JSON_VALUE)
+    @GetMapping(produces = MediaTypes.HAL_JSON_VALUE)// Endpoint para obtener todos los clientes en formato HAL+JSON
     public CollectionModel<EntityModel<ClienteResponseDTO>> obtenerTodos() {
 
         List<EntityModel<ClienteResponseDTO>> clientes = clienteService.obtenerTodos().stream()
@@ -56,7 +56,7 @@ public class ClienteControllerV2 {
         );
     }
 
-    @GetMapping(value = "/{id}", produces = MediaTypes.HAL_JSON_VALUE)
+    @GetMapping(value = "/{id}", produces = MediaTypes.HAL_JSON_VALUE)// Endpoint para obtener un cliente por su ID en formato HAL+JSON
     public ResponseEntity<EntityModel<ClienteResponseDTO>> obtenerPorId(@PathVariable Long id) {
         return clienteService.obtenerPorId(id)
             .map(assembler::toModel)
@@ -64,7 +64,7 @@ public class ClienteControllerV2 {
             .orElse(ResponseEntity.notFound().build());
     }
 
-    @PostMapping(produces = MediaTypes.HAL_JSON_VALUE)
+    @PostMapping(produces = MediaTypes.HAL_JSON_VALUE)// Endpoint para crear un nuevo cliente en formato HAL+JSON
     public ResponseEntity<EntityModel<ClienteResponseDTO>> crearCliente (@RequestBody ClienteRequestDTO clienteRequest) {
         ClienteResponseDTO nuevoCliente = clienteService.guardar(clienteRequest);
         return ResponseEntity
@@ -72,7 +72,7 @@ public class ClienteControllerV2 {
                 .body(assembler.toModel(nuevoCliente));
     }
 
-    @PutMapping(value = "/{id}", produces = MediaTypes.HAL_JSON_VALUE)
+    @PutMapping(value = "/{id}", produces = MediaTypes.HAL_JSON_VALUE)// Endpoint para actualizar un cliente existente en formato HAL+JSON
     public ResponseEntity<EntityModel<ClienteResponseDTO>> actualizarCliente(@PathVariable Long id, @RequestBody ClienteRequestDTO clienteRequest) {
         return clienteService.actualizar(id, clienteRequest)
                 .map(assembler::toModel)
@@ -80,7 +80,7 @@ public class ClienteControllerV2 {
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    @DeleteMapping(value = "/{id}", produces = MediaTypes.HAL_JSON_VALUE)
+    @DeleteMapping(value = "/{id}", produces = MediaTypes.HAL_JSON_VALUE)// Endpoint para eliminar un cliente por su ID en formato HAL+JSON
     public ResponseEntity<?> eliminarCliente(@PathVariable Long id) {
         clienteService.eliminar(id);
         return ResponseEntity.noContent().build();
