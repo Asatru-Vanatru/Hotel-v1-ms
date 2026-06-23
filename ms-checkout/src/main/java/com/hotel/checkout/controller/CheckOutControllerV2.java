@@ -1,12 +1,12 @@
 package com.hotel.checkout.controller;
 
 import com.hotel.checkout.assemblers.CheckOutModelAssemblers;
-import com.hotel.checkout.model.CheckOut;
+import com.hotel.checkout.dto.CheckOutRequestDTO;
+import com.hotel.checkout.dto.CheckOutResponseDTO;
 import com.hotel.checkout.service.CheckOutService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
-import org.springframework.hateoas.IanaLinkRelations;
 import org.springframework.hateoas.MediaTypes;
 import org.springframework.http.ResponseEntity;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
@@ -17,20 +17,19 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 
-
+@RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/v2/checkouts")
 public class CheckOutControllerV2 {
 
-    @Autowired
-    private CheckOutService checkOutService;
-
-    @Autowired
-    private CheckOutModelAssemblers assembler;
     
+    private final CheckOutService checkOutService;
+
+    private final CheckOutModelAssemblers assembler;
+
     @GetMapping(produces = MediaTypes.HAL_JSON_VALUE)
-    public CollectionModel<EntityModel<CheckOut>> obtenerTodos() {
-        List<EntityModel<CheckOut>> checkOuts = checkOutService.obtenerTodosEntidades().stream()
+    public CollectionModel<EntityModel<CheckOutResponseDTO>> obtenerTodos() {
+        List<EntityModel<CheckOutResponseDTO>> checkOuts = checkOutService.obtenerTodos().stream()
                 .map(assembler::toModel)
                 .collect(Collectors.toList());
         return CollectionModel.of(checkOuts,
@@ -38,24 +37,27 @@ public class CheckOutControllerV2 {
     }
 
     @GetMapping(value = "/{id}", produces = MediaTypes.HAL_JSON_VALUE)
-    public ResponseEntity<EntityModel<CheckOut>> obtenerPorId(@PathVariable Long id) {
-    CheckOut checkOut = checkOutService.obtenerEntidadPorId(id);
-    if (checkOut == null) return ResponseEntity.notFound().build();
-    return ResponseEntity.ok(assembler.toModel(checkOut));
-}
+    public ResponseEntity<EntityModel<CheckOutResponseDTO>> obtenerPorId(@PathVariable Long id) {
+    return checkOutService.obtenerPorId(id)
+            .map(assembler::toModel)
+            .map(ResponseEntity::ok)
+            .orElse(ResponseEntity.notFound().build());
+    }
+
 
     @PostMapping(produces = MediaTypes.HAL_JSON_VALUE)
-    public ResponseEntity<EntityModel<CheckOut>> registrar(@RequestBody CheckOut checkOut){
-        CheckOut nuevoCheckOut = checkOutService.registrarEntidad(checkOut);
-        EntityModel<CheckOut> entityModel = assembler.toModel(nuevoCheckOut);
-        return ResponseEntity.created(entityModel.getRequiredLink(IanaLinkRelations.SELF).toUri()).body(entityModel);
+    public ResponseEntity<EntityModel<CheckOutResponseDTO>> registrar(@RequestBody CheckOutRequestDTO checkOut){
+        CheckOutResponseDTO nuevoCheckOut = checkOutService.registrar(checkOut);
+        return ResponseEntity.created(linkTo(methodOn(CheckOutControllerV2.class).obtenerPorId(nuevoCheckOut.getId())).toUri())
+                .body(assembler.toModel(nuevoCheckOut));
     }
 
     @PutMapping(value = "/{id}", produces = MediaTypes.HAL_JSON_VALUE)
-    public ResponseEntity<EntityModel<CheckOut>> actualizar(@PathVariable Long id, @RequestBody CheckOut checkOut){
-        CheckOut checkOutActualizado = checkOutService.actualizarEntidad(id, checkOut);
-        EntityModel<CheckOut> entityModel = assembler.toModel(checkOutActualizado);
-        return ResponseEntity.ok(entityModel);
+    public ResponseEntity<EntityModel<CheckOutResponseDTO>> actualizar(@PathVariable Long id, @RequestBody CheckOutRequestDTO checkOut){
+        return checkOutService.actualizar(id, checkOut)
+                .map(assembler::toModel)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
     }
 
     @DeleteMapping(value = "/{id}", produces = MediaTypes.HAL_JSON_VALUE)
@@ -77,12 +79,11 @@ public class CheckOutControllerV2 {
     
 
     @GetMapping(value = "/reserva/{reservaId}", produces = MediaTypes.HAL_JSON_VALUE)
-    public ResponseEntity<EntityModel<CheckOut>> obtenerPorReservaId(@PathVariable Long reservaId) {
-        CheckOut checkOut = checkOutService.obtenerEntidadPorReservaId(reservaId);
-        if (checkOut == null) {
-            return ResponseEntity.notFound().build();
-        }
-        return ResponseEntity.ok(assembler.toModel(checkOut));
+    public ResponseEntity<EntityModel<CheckOutResponseDTO>> obtenerPorReservaId(@PathVariable Long reservaId) {
+        return checkOutService.buscarPorReserva(reservaId)
+                .map(assembler::toModel)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
     }
 
     @GetMapping(value = "/estadisticas/promedio-estancia", produces = MediaTypes.HAL_JSON_VALUE)
