@@ -5,16 +5,17 @@ import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.server.RepresentationModelAssembler;
 
 import com.hotel.clientes.controller.ClienteControllerV2;
-import com.hotel.clientes.model.Cliente;
+import com.hotel.clientes.dto.ClienteResponseDTO;
+
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
 
 
 @Component
-public class ClienteModelAssembler implements RepresentationModelAssembler<Cliente, EntityModel<Cliente>> {
+public class ClienteModelAssembler implements RepresentationModelAssembler<ClienteResponseDTO, EntityModel<ClienteResponseDTO>> {
 
     @Override
-    public EntityModel<Cliente> toModel(Cliente cliente) {
+    public EntityModel<ClienteResponseDTO> toModel(ClienteResponseDTO cliente) {
         return EntityModel.of(cliente,
                 linkTo(methodOn(ClienteControllerV2.class).obtenerPorId(cliente.getId())).withSelfRel(),
                 linkTo(methodOn(ClienteControllerV2.class).obtenerTodos()).withRel("clientes"));
