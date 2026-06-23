@@ -7,15 +7,20 @@ import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.MediaTypes;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.hotel.habitaciones.assembler.HabitacionModelAssembler;
+import com.hotel.habitaciones.dto.HabitacionRequestDTO;
 import com.hotel.habitaciones.dto.HabitacionResponseDTO;
 import com.hotel.habitaciones.service.HabitacionService;
 
+import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import lombok.RequiredArgsConstructor;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
@@ -48,9 +53,34 @@ public class HabitacionControllerV2 {
     @GetMapping(value = "/{id}", produces = MediaTypes.HAL_JSON_VALUE)// Endpoint para obtener una habitación por su ID en formato HAL+JSON
     public ResponseEntity<EntityModel<HabitacionResponseDTO>> obtenerPorId(@PathVariable Long id) {
         return habitacionService.obtenerPorId(id)
-                
-            
+                .map(assembler::toModel)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());            
         
+    }
+
+    @PostMapping(produces = MediaTypes.HAL_JSON_VALUE)// Endpoint para crear una nueva habitación en formato HAL+JSON
+    public ResponseEntity<EntityModel<HabitacionResponseDTO>> crearHabitacion(@RequestBody HabitacionRequestDTO habitacionRequest) {
+
+        HabitacionResponseDTO nuevaHabitacion = habitacionService.guardar(habitacionRequest);
+        return ResponseEntity
+                .created(linkTo(methodOn(HabitacionControllerV2.class).obtenerPorId(nuevaHabitacion.getId())).toUri())
+                .body(assembler.toModel(nuevaHabitacion));  
+                
+    }
+
+    @PutMapping(value = "/{id}", produces = MediaTypes.HAL_JSON_VALUE)// Endpoint para actualizar una habitación existente en formato HAL+JSON
+    public ResponseEntity<EntityModel<HabitacionResponseDTO>> actualizarHabitacion(@PathVariable Long id, @RequestBody HabitacionRequestDTO habitacionRequest) {
+        return habitacionService.actualizar(id, habitacionRequest)
+                .map(assembler::toModel)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+    }
+
+    @DeleteMapping(value = "/{id}", produces = MediaTypes.HAL_JSON_VALUE)// Endpoint para eliminar una habitación por su ID en formato HAL+JSON
+    public ResponseEntity<?> eliminarHabitacion(@PathVariable Long id) {
+        habitacionService.eliminar(id);
+        return ResponseEntity.noContent().build();
     }
 
 }

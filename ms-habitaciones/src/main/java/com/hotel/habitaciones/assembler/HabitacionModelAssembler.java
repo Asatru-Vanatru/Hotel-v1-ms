@@ -17,7 +17,7 @@ public class HabitacionModelAssembler implements RepresentationModelAssembler<Ha
     public EntityModel<HabitacionResponseDTO> toModel(HabitacionResponseDTO habitacion) {
         return EntityModel.of(habitacion,
                 linkTo(methodOn(HabitacionController.class).obtenerPorId(habitacion.getId())).withSelfRel(),
-                linkTo(methodOn(HabitacionController.class).obtenerTodos()).withRel("habitaciones"));
+                linkTo(methodOn(HabitacionController.class).obtenerTodas()).withRel("habitaciones"));
     }
 
 }
