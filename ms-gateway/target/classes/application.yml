@@ -1,0 +1,155 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: ms-gateway
+  cloud:
+    gateway:
+      routes:
+        - id: ms-clientes
+          uri: http://localhost:8081
+          predicates:
+            - Path=/api/clientes/**, /api/v2/clientes/**
+
+        - id: ms-habitaciones
+          uri: http://localhost:8082
+          predicates:
+            - Path=/api/habitaciones/**
+
+        - id: ms-reservas
+          uri: http://localhost:8083
+          predicates:
+            - Path=/api/reservas/**
+
+        - id: ms-checkin
+          uri: http://localhost:8084
+          predicates:
+            - Path=/api/checkins/**, /api/v2/checkins/**
+
+        - id: ms-checkout
+          uri: http://localhost:8085
+          predicates:
+            - Path=/api/checkouts/**, /api/v2/checkouts/**
+
+        - id: ms-servicios
+          uri: http://localhost:8086
+          predicates:
+            - Path=/api/servicios/**, /api/v2/servicios/**
+
+        - id: ms-consumos
+          uri: http://localhost:8087
+          predicates:
+            - Path=/api/consumos/**, /api/v2/consumos/**
+
+        - id: ms-pagos
+          uri: http://localhost:8088
+          predicates:
+            - Path=/api/pagos/**
+
+        - id: ms-empleados
+          uri: http://localhost:8089
+          predicates:
+            - Path=/api/empleados/**
+
+        - id: ms-mantenimiento
+          uri: http://localhost:8090
+          predicates:
+            - Path=/api/mantenimientos/**
+
+        - id: ms-clientes-docs
+          uri: http://localhost:8081
+          predicates:
+            - Path=/ms-clientes/v3/api-docs
+          filters:
+            - RewritePath=/ms-clientes/v3/api-docs, /v3/api-docs
+
+        - id: ms-habitaciones-docs
+          uri: http://localhost:8082
+          predicates:
+            - Path=/ms-habitaciones/v3/api-docs
+          filters:
+            - RewritePath=/ms-habitaciones/v3/api-docs, /v3/api-docs
+
+        - id: ms-reservas-docs
+          uri: http://localhost:8083
+          predicates:
+            - Path=/ms-reservas/v3/api-docs
+          filters:
+            - RewritePath=/ms-reservas/v3/api-docs, /v3/api-docs
+
+        - id: ms-checkin-docs
+          uri: http://localhost:8084
+          predicates:
+            - Path=/ms-checkin/v3/api-docs
+          filters:
+            - RewritePath=/ms-checkin/v3/api-docs, /v3/api-docs
+
+        - id: ms-checkout-docs
+          uri: http://localhost:8085
+          predicates:
+            - Path=/ms-checkout/v3/api-docs
+          filters:
+            - RewritePath=/ms-checkout/v3/api-docs, /v3/api-docs
+
+        - id: ms-servicios-docs
+          uri: http://localhost:8086
+          predicates:
+            - Path=/ms-servicios/v3/api-docs
+          filters:
+            - RewritePath=/ms-servicios/v3/api-docs, /v3/api-docs
+
+        - id: ms-consumos-docs
+          uri: http://localhost:8087
+          predicates:
+            - Path=/ms-consumos/v3/api-docs
+          filters:
+            - RewritePath=/ms-consumos/v3/api-docs, /v3/api-docs
+
+        - id: ms-pagos-docs
+          uri: http://localhost:8088
+          predicates:
+            - Path=/ms-pagos/v3/api-docs
+          filters:
+            - RewritePath=/ms-pagos/v3/api-docs, /v3/api-docs
+
+        - id: ms-empleados-docs
+          uri: http://localhost:8089
+          predicates:
+            - Path=/ms-empleados/v3/api-docs
+          filters:
+            - RewritePath=/ms-empleados/v3/api-docs, /v3/api-docs
+
+        - id: ms-mantenimiento-docs
+          uri: http://localhost:8090
+          predicates:
+            - Path=/ms-mantenimiento/v3/api-docs
+          filters:
+            - RewritePath=/ms-mantenimiento/v3/api-docs, /v3/api-docs
+
+springdoc:
+  swagger-ui:
+    path: /doc/swagger-ui.html
+    urls:
+      - name: ms-clientes
+        url: /ms-clientes/v3/api-docs
+      - name: ms-habitaciones
+        url: /ms-habitaciones/v3/api-docs
+      - name: ms-reservas
+        url: /ms-reservas/v3/api-docs
+      - name: ms-checkin
+        url: /ms-checkin/v3/api-docs
+      - name: ms-checkout
+        url: /ms-checkout/v3/api-docs
+      - name: ms-servicios
+        url: /ms-servicios/v3/api-docs
+      - name: ms-consumos
+        url: /ms-consumos/v3/api-docs
+      - name: ms-pagos
+        url: /ms-pagos/v3/api-docs
+      - name: ms-empleados
+        url: /ms-empleados/v3/api-docs
+      - name: ms-mantenimiento
+        url: /ms-mantenimiento/v3/api-docs
+  api-docs:
+    enabled: true
