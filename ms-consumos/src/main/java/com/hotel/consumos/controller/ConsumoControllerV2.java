@@ -10,12 +10,12 @@ import org.springframework.hateoas.MediaTypes;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import java.math.BigDecimal;
-import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
 import com.hotel.consumos.assemblers.ConsumosModelAssemblers;
-import com.hotel.consumos.model.Consumo;
+import com.hotel.consumos.dto.ConsumoRequestDTO;
+import com.hotel.consumos.dto.ConsumoResponseDTO;
 import com.hotel.consumos.service.ConsumoService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -37,8 +37,8 @@ public class ConsumoControllerV2 {
     private ConsumosModelAssemblers assembler;
 
     @GetMapping(produces = MediaTypes.HAL_JSON_VALUE)
-    public CollectionModel<EntityModel<Consumo>> obtenerTodos() {
-        List<EntityModel<Consumo>> consumos = consumosService.obtenerTodosEntidades().stream()
+    public CollectionModel<EntityModel<ConsumoResponseDTO>> obtenerTodos() {
+        List<EntityModel<ConsumoResponseDTO>> consumos = consumosService.obtenerTodos().stream()
                 .map(assembler::toModel)
                 .collect(Collectors.toList());
         return CollectionModel.of(consumos,
@@ -46,41 +46,43 @@ public class ConsumoControllerV2 {
     }
 
     @GetMapping(value = "/{id}", produces = MediaTypes.HAL_JSON_VALUE)
-    public ResponseEntity<EntityModel<Consumo>> obtenerPorId(@PathVariable Long id) {
-        Consumo consumo = consumosService.obtenerEntidadPorId(id);
-        if (consumo == null) return ResponseEntity.notFound().build();
-        return ResponseEntity.ok(assembler.toModel(consumo));
+    public ResponseEntity<EntityModel<ConsumoResponseDTO>> obtenerPorId(@PathVariable Long id) {
+        return consumosService.obtenerPorId(id)
+                .map(assembler::toModel)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
     }
 
     @PostMapping(produces = MediaTypes.HAL_JSON_VALUE)
-    public ResponseEntity<EntityModel<Consumo>> registrar(@RequestBody Consumo consumo){
-        Consumo nuevoConsumo = consumosService.registrarEntidad(consumo);
-        EntityModel<Consumo> entityModel = assembler.toModel(nuevoConsumo);
+    public ResponseEntity<EntityModel<ConsumoResponseDTO>> registrar(@RequestBody ConsumoRequestDTO consumo) {
+        ConsumoResponseDTO nuevoConsumo = consumosService.registrar(consumo);
+        EntityModel<ConsumoResponseDTO> entityModel = assembler.toModel(nuevoConsumo);
         return ResponseEntity.created(entityModel.getRequiredLink(IanaLinkRelations.SELF).toUri()).body(entityModel);
     }
 
     @PutMapping(value = "/{id}", produces = MediaTypes.HAL_JSON_VALUE)
-    public ResponseEntity<EntityModel<Consumo>> actualizar(@PathVariable Long id, @RequestBody Consumo consumo){
-        Consumo consumoActualizado = consumosService.actualizarEntidad(id, consumo);
-        EntityModel<Consumo> entityModel = assembler.toModel(consumoActualizado);
-        return ResponseEntity.ok(entityModel);
+    public ResponseEntity<EntityModel<ConsumoResponseDTO>> actualizar(@PathVariable Long id, @RequestBody ConsumoRequestDTO consumo) {
+        return consumosService.actualizar(id, consumo)
+                .map(assembler::toModel)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
     }
 
     @DeleteMapping(value = "/{id}", produces = MediaTypes.HAL_JSON_VALUE)
     public ResponseEntity<Void> eliminar(@PathVariable Long id) {
-        if (consumosService.obtenerEntidadPorId(id) == null) {
+        if (consumosService.obtenerPorId(id).isEmpty()) {
             return ResponseEntity.notFound().build();
         }
-        consumosService.eliminarEntidad(id);
+        consumosService.eliminar(id);
         return ResponseEntity.noContent().build();
     }
 
     @GetMapping("/reserva/{reservaId}")
-    public ResponseEntity<CollectionModel<EntityModel<Consumo>>> obtenerPorReserva(@PathVariable Long reservaId) {
-        List<EntityModel<Consumo>> consumos = consumosService.obtenerEntidadesPorReserva(reservaId).stream()
+    public ResponseEntity<CollectionModel<EntityModel<ConsumoResponseDTO>>> obtenerPorReserva(@PathVariable Long reservaId) {
+        List<EntityModel<ConsumoResponseDTO>> consumos = consumosService.buscarPorReserva(reservaId).stream()
                 .map(assembler::toModel)
                 .collect(Collectors.toList());
-                CollectionModel<EntityModel<Consumo>> collectionModel = CollectionModel.of(consumos,
+        CollectionModel<EntityModel<ConsumoResponseDTO>> collectionModel = CollectionModel.of(consumos,
                 linkTo(methodOn(ConsumoControllerV2.class).obtenerPorReserva(reservaId)).withSelfRel());
         return ResponseEntity.ok(collectionModel);
     }
@@ -94,13 +96,9 @@ public class ConsumoControllerV2 {
     }
 
     @GetMapping("/estadisticas/mas-consumidos")
-    public ResponseEntity<CollectionModel<EntityModel<Consumo>>> obtenerMasConsumidos() {
-        List<EntityModel<Consumo>> consumos = consumosService.obtenerMasConsumidos().stream()
-                .map(assembler::toModel)
-                .collect(Collectors.toList());
-                CollectionModel<EntityModel<Consumo>> collectionModel = CollectionModel.of(consumos,
-                linkTo(methodOn(ConsumoControllerV2.class).obtenerMasConsumidos()).withSelfRel());
-        return ResponseEntity.ok(collectionModel);
+    public ResponseEntity<List<Object[]>> obtenerMasConsumidos() {
+        return ResponseEntity.ok(consumosService.obtenerServiciosMasConsumidos());
     }
 
 }
+
