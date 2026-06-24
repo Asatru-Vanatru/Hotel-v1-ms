@@ -8,9 +8,11 @@ import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.MediaTypes;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -65,9 +67,21 @@ public class PagoControllerV2 {
         EntityModel<PagoResponseDTO> model = assembler.toModel(nuevoPago);
         return ResponseEntity.created(location).body(model);
     }
+
+    @PutMapping(value = "/{id}", produces = MediaTypes.HAL_JSON_VALUE)
+    public ResponseEntity<EntityModel<PagoResponseDTO>> actualizarPago(@PathVariable Long id, @RequestBody PagoRequestDTO pagoRequest) {
+        return pagoService.actualizar(id, pagoRequest)
+                .map(assembler::toModel)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());    
+    }
+
     
-    
-    
+    @DeleteMapping(value = "/{id}", produces = MediaTypes.HAL_JSON_VALUE)// Endpoint para eliminar una habitación por su ID en formato HAL+JSON
+    public ResponseEntity<?> eliminarPago(@PathVariable Long id){
+        pagoService.eliminar(id);
+        return ResponseEntity.noContent().build();
+    }
 
 
 
