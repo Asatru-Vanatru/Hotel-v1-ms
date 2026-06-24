@@ -6,127 +6,151 @@ spring:
     name: ms-gateway
   cloud:
     gateway:
+      # Desactiva ForwardedHeadersFilter para evitar conflictos de API en tiempo de ejecucion
+      forwarded:
+        enabled: false
       routes:
+        # ── RUTAS API ─────────────────────────────────────────────────────────
+        # lb:// indica que el gateway resuelve la instancia via Eureka + LoadBalancer
+
         - id: ms-clientes
-          uri: http://localhost:8081
+          uri: lb://ms-clientes
           predicates:
             - Path=/api/clientes/**, /api/v2/clientes/**
 
         - id: ms-habitaciones
-          uri: http://localhost:8082
+          uri: lb://ms-habitaciones
           predicates:
             - Path=/api/habitaciones/**
 
         - id: ms-reservas
-          uri: http://localhost:8083
+          uri: lb://ms-reservas
           predicates:
             - Path=/api/reservas/**
 
         - id: ms-checkin
-          uri: http://localhost:8084
+          uri: lb://ms-checkin
           predicates:
             - Path=/api/checkins/**, /api/v2/checkins/**
 
         - id: ms-checkout
-          uri: http://localhost:8085
+          uri: lb://ms-checkout
           predicates:
             - Path=/api/checkouts/**, /api/v2/checkouts/**
 
         - id: ms-servicios
-          uri: http://localhost:8086
+          uri: lb://ms-servicios
           predicates:
             - Path=/api/servicios/**, /api/v2/servicios/**
 
         - id: ms-consumos
-          uri: http://localhost:8087
+          uri: lb://ms-consumos
           predicates:
             - Path=/api/consumos/**, /api/v2/consumos/**
 
         - id: ms-pagos
-          uri: http://localhost:8088
+          uri: lb://ms-pagos
           predicates:
             - Path=/api/pagos/**
 
         - id: ms-empleados
-          uri: http://localhost:8089
+          uri: lb://ms-empleados
           predicates:
             - Path=/api/empleados/**
 
         - id: ms-mantenimiento
-          uri: http://localhost:8090
+          uri: lb://ms-mantenimiento
           predicates:
             - Path=/api/mantenimientos/**
 
+        # ── RUTAS SWAGGER / OPENAPI ───────────────────────────────────────────
+        # El gateway proxea los JSON de OpenAPI de cada microservicio
+        # para que el Swagger UI unificado pueda mostrarlos todos
+
         - id: ms-clientes-docs
-          uri: http://localhost:8081
+          uri: lb://ms-clientes
           predicates:
             - Path=/ms-clientes/v3/api-docs
           filters:
             - RewritePath=/ms-clientes/v3/api-docs, /v3/api-docs
 
         - id: ms-habitaciones-docs
-          uri: http://localhost:8082
+          uri: lb://ms-habitaciones
           predicates:
             - Path=/ms-habitaciones/v3/api-docs
           filters:
             - RewritePath=/ms-habitaciones/v3/api-docs, /v3/api-docs
 
         - id: ms-reservas-docs
-          uri: http://localhost:8083
+          uri: lb://ms-reservas
           predicates:
             - Path=/ms-reservas/v3/api-docs
           filters:
             - RewritePath=/ms-reservas/v3/api-docs, /v3/api-docs
 
         - id: ms-checkin-docs
-          uri: http://localhost:8084
+          uri: lb://ms-checkin
           predicates:
             - Path=/ms-checkin/v3/api-docs
           filters:
             - RewritePath=/ms-checkin/v3/api-docs, /v3/api-docs
 
         - id: ms-checkout-docs
-          uri: http://localhost:8085
+          uri: lb://ms-checkout
           predicates:
             - Path=/ms-checkout/v3/api-docs
           filters:
             - RewritePath=/ms-checkout/v3/api-docs, /v3/api-docs
 
         - id: ms-servicios-docs
-          uri: http://localhost:8086
+          uri: lb://ms-servicios
           predicates:
             - Path=/ms-servicios/v3/api-docs
           filters:
             - RewritePath=/ms-servicios/v3/api-docs, /v3/api-docs
 
         - id: ms-consumos-docs
-          uri: http://localhost:8087
+          uri: lb://ms-consumos
           predicates:
             - Path=/ms-consumos/v3/api-docs
           filters:
             - RewritePath=/ms-consumos/v3/api-docs, /v3/api-docs
 
         - id: ms-pagos-docs
-          uri: http://localhost:8088
+          uri: lb://ms-pagos
           predicates:
             - Path=/ms-pagos/v3/api-docs
           filters:
             - RewritePath=/ms-pagos/v3/api-docs, /v3/api-docs
 
         - id: ms-empleados-docs
-          uri: http://localhost:8089
+          uri: lb://ms-empleados
           predicates:
             - Path=/ms-empleados/v3/api-docs
           filters:
             - RewritePath=/ms-empleados/v3/api-docs, /v3/api-docs
 
         - id: ms-mantenimiento-docs
-          uri: http://localhost:8090
+          uri: lb://ms-mantenimiento
           predicates:
             - Path=/ms-mantenimiento/v3/api-docs
           filters:
             - RewritePath=/ms-mantenimiento/v3/api-docs, /v3/api-docs
 
+# Eureka: el gateway se registra y descubre microservicios del hotel
+eureka:
+  client:
+    service-url:
+      defaultZone: ${EUREKA_CLIENT_SERVICEURL_DEFAULTZONE:http://localhost:8761/eureka/}
+
+# Actuator: expone endpoints de salud e info
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+
+# SpringDoc: Swagger UI unificado con todos los microservicios del hotel
 springdoc:
   swagger-ui:
     path: /doc/swagger-ui.html

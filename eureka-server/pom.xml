@@ -2,9 +2,9 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
-
     <modelVersion>4.0.0</modelVersion>
 
+    <!-- Hereda configuración base de Spring Boot -->
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
@@ -13,14 +13,16 @@
     </parent>
 
     <groupId>com.hotel</groupId>
-    <artifactId>ms-gateway</artifactId>
+    <artifactId>eureka-server</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>ms-gateway</name>
+    <name>eureka-server</name>
+    <description>Servidor de Registro y Descubrimiento de Servicios del Hotel</description>
 
     <properties>
-        <java.version>21</java.version>
+        <java.version>17</java.version>
     </properties>
 
+    <!-- Gestión de versiones de Spring Cloud 2024.0.0 -->
     <dependencyManagement>
         <dependencies>
             <dependency>
@@ -34,41 +36,22 @@
     </dependencyManagement>
 
     <dependencies>
-        <!-- WebFlux: requerido por Spring Cloud Gateway (reactivo) -->
+        <!-- Spring Boot Web para el dashboard de Eureka -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-webflux</artifactId>
+            <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
 
-        <!-- Gateway: enrutamiento de peticiones HTTP hacia los microservicios -->
+        <!-- Eureka Server: registra y descubre todos los microservicios del hotel -->
         <dependency>
             <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-gateway</artifactId>
+            <artifactId>spring-cloud-starter-netflix-eureka-server</artifactId>
         </dependency>
 
-        <!-- Eureka Client: descubrimiento de servicios registrados en el servidor Eureka -->
-        <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
-        </dependency>
-
-        <!-- LoadBalancer: balanceo de carga para rutas lb:// con Eureka -->
-        <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-loadbalancer</artifactId>
-        </dependency>
-
-        <!-- Actuator: endpoints /actuator/health e /actuator/info para monitoreo -->
+        <!-- Actuator: endpoints de salud para monitoreo -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-actuator</artifactId>
-        </dependency>
-
-        <!-- SpringDoc WebFlux: Swagger UI unificado que agrega los docs de todos los microservicios -->
-        <dependency>
-            <groupId>org.springdoc</groupId>
-            <artifactId>springdoc-openapi-starter-webflux-ui</artifactId>
-            <version>2.6.0</version>
         </dependency>
     </dependencies>
 
