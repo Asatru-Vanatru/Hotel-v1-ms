@@ -10,7 +10,6 @@ import org.springframework.hateoas.MediaTypes;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import java.math.BigDecimal;
-import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
@@ -62,6 +61,7 @@ public class ConsumoControllerV2 {
     @PutMapping(value = "/{id}", produces = MediaTypes.HAL_JSON_VALUE)
     public ResponseEntity<EntityModel<Consumo>> actualizar(@PathVariable Long id, @RequestBody Consumo consumo){
         Consumo consumoActualizado = consumosService.actualizarEntidad(id, consumo);
+        if (consumoActualizado == null) return ResponseEntity.notFound().build();
         EntityModel<Consumo> entityModel = assembler.toModel(consumoActualizado);
         return ResponseEntity.ok(entityModel);
     }

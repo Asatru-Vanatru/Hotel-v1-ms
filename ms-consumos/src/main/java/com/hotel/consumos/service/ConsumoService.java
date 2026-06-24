@@ -96,4 +96,43 @@ public class ConsumoService {
         return consumoRepository.findServiciosMasConsumidos(); // SQL nativo MySQL
     }
 
+    // ── MÉTODOS PARA HATEOAS (V2) — operan sobre entidades directamente ──────
+
+    public List<Consumo> obtenerTodosEntidades() {
+        return consumoRepository.findAll();
+    }
+
+    public Consumo obtenerEntidadPorId(Long id) {
+        return consumoRepository.findById(id).orElse(null);
+    }
+
+    public Consumo registrarEntidad(Consumo consumo) {
+        return consumoRepository.save(consumo);
+    }
+
+    public Consumo actualizarEntidad(Long id, Consumo consumo) {
+        return consumoRepository.findById(id).map(existente -> {
+            existente.setReservaId(consumo.getReservaId());
+            existente.setClienteId(consumo.getClienteId());
+            existente.setServicioId(consumo.getServicioId());
+            existente.setCantidad(consumo.getCantidad());
+            existente.setFechaConsumo(consumo.getFechaConsumo());
+            existente.setSubtotal(consumo.getSubtotal());
+            existente.setObservaciones(consumo.getObservaciones());
+            return consumoRepository.save(existente);
+        }).orElse(null);
+    }
+
+    public void eliminarEntidad(Long id) {
+        consumoRepository.deleteById(id);
+    }
+
+    public List<Consumo> obtenerEntidadesPorReserva(Long reservaId) {
+        return consumoRepository.findByReservaId(reservaId);
+    }
+
+    public List<Consumo> obtenerMasConsumidos() {
+        return consumoRepository.findTop5ByOrderByCantidadDesc();
+    }
+
 }

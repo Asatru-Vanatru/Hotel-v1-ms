@@ -46,4 +46,6 @@ public interface ConsumoRepository extends JpaRepository<Consumo, Long> {
     )
     List<Object[]> findServiciosMasConsumidos(); // Top 5 servicios más solicitados por huéspedes
 
+    List<Consumo> findTop5ByOrderByCantidadDesc();
+
 }
