@@ -1,9 +1,10 @@
 package com.hotel.checkin.controller;
 
 import com.hotel.checkin.assemblers.CheckInModelAssemblers;
+import com.hotel.checkin.dto.CheckInRequestDTO;
 import com.hotel.checkin.model.CheckIn;
 import com.hotel.checkin.service.CheckInService;
-import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.validation.Valid;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
@@ -22,11 +23,13 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
 @RequestMapping("/api/v2/checkins")
 public class CheckInControllerV2 {
 
-    @Autowired
-    private CheckInService checkInService;
+    private final CheckInService checkInService;
+    private final CheckInModelAssemblers assembler;
 
-    @Autowired
-    private CheckInModelAssemblers assembler;
+    public CheckInControllerV2(CheckInService checkInService, CheckInModelAssemblers assembler) {
+        this.checkInService = checkInService;
+        this.assembler = assembler;
+    }
 
     @GetMapping(produces = MediaTypes.HAL_JSON_VALUE)
     public CollectionModel<EntityModel<CheckIn>> obtenerTodos() {
@@ -38,13 +41,19 @@ public class CheckInControllerV2 {
     }
 
     @GetMapping(value = "/{id}", produces = MediaTypes.HAL_JSON_VALUE)
-    public EntityModel<CheckIn> obtenerPorId(@PathVariable Long id) {
-        CheckIn checkIn = checkInService.obtenerEntidadPorId(id);
-        return assembler.toModel(checkIn);
+    public ResponseEntity<EntityModel<CheckIn>> obtenerPorId(@PathVariable Long id) {
+        try {
+            CheckIn checkIn = checkInService.obtenerEntidadPorId(id);
+            return ResponseEntity.ok(assembler.toModel(checkIn));
+        } catch (RuntimeException e) {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     @PostMapping(produces = MediaTypes.HAL_JSON_VALUE)
-    public ResponseEntity<EntityModel<CheckIn>> registrar(@RequestBody CheckIn checkIn) {
+    public ResponseEntity<EntityModel<CheckIn>> registrar(@Valid @RequestBody CheckInRequestDTO dto) {
+        CheckIn checkIn = new CheckIn(null, dto.getReservaId(), dto.getClienteId(),
+                dto.getHabitacionId(), dto.getFechaHoraCheckIn(), dto.getObservaciones());
         CheckIn nuevo = checkInService.guardar(checkIn);
         return ResponseEntity
                 .created(linkTo(methodOn(CheckInControllerV2.class).obtenerPorId(nuevo.getId())).toUri())
@@ -52,14 +61,25 @@ public class CheckInControllerV2 {
     }
 
     @PutMapping(value = "/{id}", produces = MediaTypes.HAL_JSON_VALUE)
-    public ResponseEntity<EntityModel<CheckIn>> actualizar(@PathVariable Long id, @RequestBody CheckIn checkIn) {
-        checkIn.setId(id);
+    public ResponseEntity<EntityModel<CheckIn>> actualizar(@PathVariable Long id, @Valid @RequestBody CheckInRequestDTO dto) {
+        try {
+            checkInService.obtenerEntidadPorId(id);
+        } catch (RuntimeException e) {
+            return ResponseEntity.notFound().build();
+        }
+        CheckIn checkIn = new CheckIn(id, dto.getReservaId(), dto.getClienteId(),
+                dto.getHabitacionId(), dto.getFechaHoraCheckIn(), dto.getObservaciones());
         CheckIn actualizado = checkInService.guardar(checkIn);
         return ResponseEntity.ok(assembler.toModel(actualizado));
     }
 
     @DeleteMapping(value = "/{id}", produces = MediaTypes.HAL_JSON_VALUE)
     public ResponseEntity<?> eliminar(@PathVariable Long id) {
+        try {
+            checkInService.obtenerEntidadPorId(id);
+        } catch (RuntimeException e) {
+            return ResponseEntity.notFound().build();
+        }
         checkInService.eliminar(id);
         return ResponseEntity.noContent().build();
     }

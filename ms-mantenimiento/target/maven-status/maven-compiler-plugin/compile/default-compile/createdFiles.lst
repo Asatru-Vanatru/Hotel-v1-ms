@@ -1,0 +1,11 @@
+com\hotel\mantenimiento\dto\MantenimientoResponseDTO.class
+com\hotel\mantenimiento\controller\MantenimientoControllerV2.class
+com\hotel\mantenimiento\model\Mantenimiento.class
+com\hotel\mantenimiento\service\MantenimientoService.class
+com\hotel\mantenimiento\config\SwaggerConfig.class
+com\hotel\mantenimiento\controller\MantenimientoController.class
+com\hotel\mantenimiento\assembler\MantenimientoModelAssembler.class
+com\hotel\mantenimiento\MantenimientoApplication.class
+com\hotel\mantenimiento\dto\MantenimientoRequestDTO.class
+com\hotel\mantenimiento\repository\MantenimientoRepository.class
+com\hotel\mantenimiento\DataLoader.class

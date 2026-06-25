@@ -1,28 +1,28 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!-- Archivo de configuración Maven: define el proyecto, sus dependencias y plugins -->
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<!-- Archivo de configuraciÃ³n Maven: define el proyecto, sus dependencias y plugins -->
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <!-- modelVersion: versión del modelo POM, siempre 4.0.0 para Maven 2 y posteriores -->
+    <!-- modelVersion: versiÃ³n del modelo POM, siempre 4.0.0 para Maven 2 y posteriores -->
     <modelVersion>4.0.0</modelVersion>
-    <!-- parent: hereda configuración base de Spring Boot, centraliza versiones de dependencias -->
+    <!-- parent: hereda configuraciÃ³n base de Spring Boot, centraliza versiones de dependencias -->
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <!-- version: versión de Spring Boot usada en todo el microservicio -->
-        <version>4.0.6</version>
+        <!-- version: versiÃ³n de Spring Boot usada en todo el microservicio -->
+        <version>3.4.7</version>
         <relativePath/>
     </parent>
-    <!-- groupId: paquete raíz del proyecto, identifica la organización -->
+    <!-- groupId: paquete raÃ­z del proyecto, identifica la organizaciÃ³n -->
     <groupId>com.hotel</groupId>
-    <!-- artifactId: nombre único de este microservicio -->
+    <!-- artifactId: nombre Ãºnico de este microservicio -->
     <artifactId>ms-habitaciones</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>ms-habitaciones</name>
-    <!-- description: propósito funcional del microservicio de habitaciones -->
-    <description>Microservicio de Gestión de Habitaciones del Hotel</description>
+    <!-- description: propÃ³sito funcional del microservicio de habitaciones -->
+    <description>Microservicio de GestiÃ³n de Habitaciones del Hotel</description>
     <properties>
-        <!-- java.version: versión de Java requerida para compilar -->
+        <!-- java.version: versiÃ³n de Java requerida para compilar -->
         <java.version>21</java.version>
     </properties>
     <dependencies>
@@ -31,10 +31,10 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jpa</artifactId>
         </dependency>
-        <!-- spring-boot-starter-webmvc: Spring MVC y Tomcat embebido para exponer APIs REST -->
+        <!-- spring-boot-starter-web: Spring MVC y Tomcat embebido para exponer APIs REST -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-webmvc</artifactId>
+            <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -57,7 +57,7 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-validation</artifactId>
         </dependency>
-        <!-- spring-boot-starter-test: JUnit 5, Mockito y AssertJ para pruebas automáticas -->
+        <!-- spring-boot-starter-test: JUnit 5, Mockito y AssertJ para pruebas automÃ¡ticas -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
@@ -81,13 +81,13 @@
         </dependency>
     </dependencies>
 
-    <!-- Gestión de versiones de Spring Cloud compatible -->
+    <!-- GestiÃ³n de versiones de Spring Cloud compatible -->
     <dependencyManagement>
         <dependencies>
             <dependency>
                 <groupId>org.springframework.cloud</groupId>
                 <artifactId>spring-cloud-dependencies</artifactId>
-                <version>2024.0.0</version>
+                <version>2024.0.1</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
@@ -102,7 +102,7 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
                     <excludes>
-                        <!-- Excluye Lombok del JAR final: solo se usa en compilación -->
+                        <!-- Excluye Lombok del JAR final: solo se usa en compilaciÃ³n -->
                         <exclude>
                             <groupId>org.projectlombok</groupId>
                             <artifactId>lombok</artifactId>
@@ -135,7 +135,7 @@
                         <goals><goal>testCompile</goal></goals>
                         <configuration>
                             <annotationProcessorPaths>
-                                <!-- Lombok también procesa anotaciones en las clases de test -->
+                                <!-- Lombok tambiÃ©n procesa anotaciones en las clases de test -->
                                 <path>
                                     <groupId>org.projectlombok</groupId>
                                     <artifactId>lombok</artifactId>

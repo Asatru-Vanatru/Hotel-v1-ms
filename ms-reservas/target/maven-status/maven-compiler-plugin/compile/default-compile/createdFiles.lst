@@ -1,0 +1,11 @@
+com\hotel\reservas\dto\ReservaResponseDTO.class
+com\hotel\reservas\dto\ReservaRequestDTO.class
+com\hotel\reservas\model\Reserva.class
+com\hotel\reservas\assemblers\ReservaModelAssembler.class
+com\hotel\reservas\service\ReservaService.class
+com\hotel\reservas\ReservasApplication.class
+com\hotel\reservas\controller\ReservaControllerV2.class
+com\hotel\reservas\DataLoader.class
+com\hotel\reservas\controller\ReservaController.class
+com\hotel\reservas\config\SwaggerConfig.class
+com\hotel\reservas\repository\ReservaRepository.class

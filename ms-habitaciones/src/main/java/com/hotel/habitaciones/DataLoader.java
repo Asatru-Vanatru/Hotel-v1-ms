@@ -3,7 +3,7 @@ package com.hotel.habitaciones;
 import com.hotel.habitaciones.model.Habitacion;
 import com.hotel.habitaciones.repository.HabitacionRepository;
 import net.datafaker.Faker;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
@@ -14,10 +14,10 @@ import java.util.List;
 
 @Profile("dev")
 @Component
+@RequiredArgsConstructor
 public class DataLoader implements CommandLineRunner {
 
-    @Autowired
-    private HabitacionRepository habitacionRepository;
+    private final HabitacionRepository habitacionRepository;
 
     @Override
     public void run(String... args) {
@@ -35,7 +35,7 @@ public class DataLoader implements CommandLineRunner {
             habitacion.setNumero(String.format("%03d", i + 101));
             habitacion.setTipo(tipos[faker.random().nextInt(tipos.length)]);
             habitacion.setCapacidad(faker.number().numberBetween(1, 5));
-            habitacion.setPrecioNoche(BigDecimal.valueOf(faker.number().numberBetween(8000, 25000) / 100.0));
+            habitacion.setPrecioNoche(BigDecimal.valueOf(faker.number().numberBetween(8000, 25000)).divide(BigDecimal.valueOf(100)));
             habitacion.setDescripcion("Habitación " + faker.options().option("con vista al mar", "con balcón", "premium", "ejecutiva"));
             habitacion.setEstado(estados[faker.random().nextInt(estados.length)]);
             habitacion.setPiso(faker.number().numberBetween(1, 6));

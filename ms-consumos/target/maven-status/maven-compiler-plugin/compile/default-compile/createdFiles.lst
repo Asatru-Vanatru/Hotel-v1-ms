@@ -1,0 +1,11 @@
+com\hotel\consumos\DataLoader.class
+com\hotel\consumos\config\SwaggerConfig.class
+com\hotel\consumos\ConsumosApplication.class
+com\hotel\consumos\controller\ConsumoController.class
+com\hotel\consumos\dto\ConsumoResponseDTO.class
+com\hotel\consumos\repository\ConsumoRepository.class
+com\hotel\consumos\assemblers\ConsumosModelAssemblers.class
+com\hotel\consumos\model\Consumo.class
+com\hotel\consumos\service\ConsumoService.class
+com\hotel\consumos\dto\ConsumoRequestDTO.class
+com\hotel\consumos\controller\ConsumoControllerV2.class

@@ -1,0 +1,11 @@
+com\hotel\servicios\DataLoader.class
+com\hotel\servicios\dto\ServicioResponseDTO.class
+com\hotel\servicios\ServiciosApplication.class
+com\hotel\servicios\controller\ServicioControllerV2.class
+com\hotel\servicios\repository\ServicioRepository.class
+com\hotel\servicios\config\SwaggerConfig.class
+com\hotel\servicios\controller\ServicioController.class
+com\hotel\servicios\model\Servicio.class
+com\hotel\servicios\assemblers\ServicioModelAssembler.class
+com\hotel\servicios\dto\ServicioRequestDTO.class
+com\hotel\servicios\service\ServicioService.class

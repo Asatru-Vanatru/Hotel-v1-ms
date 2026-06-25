@@ -1,0 +1,11 @@
+com\hotel\clientes\service\ClienteService.class
+com\hotel\clientes\ClientesApplication.class
+com\hotel\clientes\controller\ClienteController.class
+com\hotel\clientes\model\Cliente.class
+com\hotel\clientes\controller\ClienteControllerV2.class
+com\hotel\clientes\repository\ClienteRepository.class
+com\hotel\clientes\dto\ClienteRequestDTO.class
+com\hotel\clientes\DataLoader.class
+com\hotel\clientes\assemblers\ClienteModelAssembler.class
+com\hotel\clientes\dto\ClienteResponseDTO.class
+com\hotel\clientes\config\SwaggerConfig.class

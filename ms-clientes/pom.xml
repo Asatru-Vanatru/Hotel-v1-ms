@@ -1,37 +1,37 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!-- Archivo de configuración Maven: define el proyecto, sus dependencias y plugins -->
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<!-- Archivo de configuraciÃ³n Maven: define el proyecto, sus dependencias y plugins -->
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 
-    <!-- modelVersion: versión del modelo POM, siempre 4.0.0 para Maven 2 y posteriores -->
+    <!-- modelVersion: versiÃ³n del modelo POM, siempre 4.0.0 para Maven 2 y posteriores -->
     <modelVersion>4.0.0</modelVersion>
 
-    <!-- parent: hereda configuración base de Spring Boot, centraliza versiones de dependencias -->
+    <!-- parent: hereda configuraciÃ³n base de Spring Boot, centraliza versiones de dependencias -->
     <parent>
         <!-- groupId del proyecto padre de Spring Boot -->
         <groupId>org.springframework.boot</groupId>
         <!-- artifactId del POM padre que gestiona todas las versiones compatibles -->
         <artifactId>spring-boot-starter-parent</artifactId>
-        <!-- version: versión de Spring Boot usada en todo el microservicio -->
-        <version>4.0.6</version>
-        <!-- relativePath vacío: descarga el POM padre desde Maven Central (no local) -->
+        <!-- version: versiÃ³n de Spring Boot usada en todo el microservicio -->
+        <version>3.4.7</version>
+        <!-- relativePath vacÃ­o: descarga el POM padre desde Maven Central (no local) -->
         <relativePath/>
     </parent>
 
-    <!-- groupId: paquete raíz del proyecto, identifica la organización -->
+    <!-- groupId: paquete raÃ­z del proyecto, identifica la organizaciÃ³n -->
     <groupId>com.hotel</groupId>
-    <!-- artifactId: nombre único de este microservicio -->
+    <!-- artifactId: nombre Ãºnico de este microservicio -->
     <artifactId>ms-clientes</artifactId>
-    <!-- version: versión en desarrollo del microservicio -->
+    <!-- version: versiÃ³n en desarrollo del microservicio -->
     <version>0.0.1-SNAPSHOT</version>
     <!-- name: nombre legible para reportes Maven -->
     <name>ms-clientes</name>
-    <!-- description: propósito funcional del microservicio -->
-    <description>Microservicio de Gestión de Clientes y Huéspedes del Hotel</description>
+    <!-- description: propÃ³sito funcional del microservicio -->
+    <description>Microservicio de GestiÃ³n de Clientes y HuÃ©spedes del Hotel</description>
 
     <properties>
-        <!-- java.version: versión de Java para compilar el microservicio -->
+        <!-- java.version: versiÃ³n de Java para compilar el microservicio -->
         <java.version>21</java.version>
     </properties>
 
@@ -42,21 +42,21 @@
             <artifactId>spring-boot-starter-data-jpa</artifactId>
         </dependency>
 
-        <!-- spring-boot-starter-webmvc: Spring MVC + Tomcat embebido para exponer APIs REST -->
+        <!-- spring-boot-starter-web: Spring MVC + Tomcat embebido para exponer APIs REST -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-webmvc</artifactId>
+            <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
 
         <!-- mysql-connector-j: driver JDBC para conectar Java con el servidor MySQL -->
         <dependency>
             <groupId>com.mysql</groupId>
             <artifactId>mysql-connector-j</artifactId>
-            <!-- runtime: solo necesario en ejecución, no en compilación -->
+            <!-- runtime: solo necesario en ejecuciÃ³n, no en compilaciÃ³n -->
             <scope>runtime</scope>
         </dependency>
 
-        <!-- lombok: genera getters, setters y constructores automáticamente con anotaciones -->
+        <!-- lombok: genera getters, setters y constructores automÃ¡ticamente con anotaciones -->
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
@@ -70,7 +70,7 @@
             <artifactId>spring-boot-starter-validation</artifactId>
         </dependency>
 
-        <!-- spring-boot-starter-test: JUnit 5, Mockito y AssertJ para pruebas automáticas -->
+        <!-- spring-boot-starter-test: JUnit 5, Mockito y AssertJ para pruebas automÃ¡ticas -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
@@ -99,13 +99,13 @@
         </dependency>
     </dependencies>
 
-    <!-- Gestión de versiones de Spring Cloud compatible -->
+    <!-- GestiÃ³n de versiones de Spring Cloud compatible -->
     <dependencyManagement>
         <dependencies>
             <dependency>
                 <groupId>org.springframework.cloud</groupId>
                 <artifactId>spring-cloud-dependencies</artifactId>
-                <version>2024.0.0</version>
+                <version>2024.0.1</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
@@ -120,7 +120,7 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
                     <excludes>
-                        <!-- Excluye Lombok del JAR final: solo se usa en compilación, no en ejecución -->
+                        <!-- Excluye Lombok del JAR final: solo se usa en compilaciÃ³n, no en ejecuciÃ³n -->
                         <exclude>
                             <groupId>org.projectlombok</groupId>
                             <artifactId>lombok</artifactId>
@@ -134,7 +134,7 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <executions>
                     <execution>
-                        <!-- Ejecución de compilación del código fuente principal -->
+                        <!-- EjecuciÃ³n de compilaciÃ³n del cÃ³digo fuente principal -->
                         <id>default-compile</id>
                         <phase>compile</phase>
                         <goals>
@@ -142,7 +142,7 @@
                         </goals>
                         <configuration>
                             <annotationProcessorPaths>
-                                <!-- Lombok procesa las anotaciones @Data, @Builder, etc. en compilación -->
+                                <!-- Lombok procesa las anotaciones @Data, @Builder, etc. en compilaciÃ³n -->
                                 <path>
                                     <groupId>org.projectlombok</groupId>
                                     <artifactId>lombok</artifactId>
@@ -151,7 +151,7 @@
                         </configuration>
                     </execution>
                     <execution>
-                        <!-- Ejecución de compilación del código de pruebas -->
+                        <!-- EjecuciÃ³n de compilaciÃ³n del cÃ³digo de pruebas -->
                         <id>default-testCompile</id>
                         <phase>test-compile</phase>
                         <goals>
@@ -159,7 +159,7 @@
                         </goals>
                         <configuration>
                             <annotationProcessorPaths>
-                                <!-- Lombok también procesa anotaciones en las clases de test -->
+                                <!-- Lombok tambiÃ©n procesa anotaciones en las clases de test -->
                                 <path>
                                     <groupId>org.projectlombok</groupId>
                                     <artifactId>lombok</artifactId>

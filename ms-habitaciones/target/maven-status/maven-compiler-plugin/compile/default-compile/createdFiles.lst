@@ -1,0 +1,11 @@
+com\hotel\habitaciones\controller\HabitacionControllerV2.class
+com\hotel\habitaciones\model\Habitacion.class
+com\hotel\habitaciones\dto\HabitacionRequestDTO.class
+com\hotel\habitaciones\dto\HabitacionResponseDTO.class
+com\hotel\habitaciones\config\SwaggerConfig.class
+com\hotel\habitaciones\HabitacionesApplication.class
+com\hotel\habitaciones\repository\HabitacionRepository.class
+com\hotel\habitaciones\assembler\HabitacionModelAssembler.class
+com\hotel\habitaciones\controller\HabitacionController.class
+com\hotel\habitaciones\DataLoader.class
+com\hotel\habitaciones\service\HabitacionService.class

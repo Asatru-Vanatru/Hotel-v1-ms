@@ -20,8 +20,9 @@ import com.hotel.habitaciones.dto.HabitacionRequestDTO;
 import com.hotel.habitaciones.dto.HabitacionResponseDTO;
 import com.hotel.habitaciones.service.HabitacionService;
 
-import io.swagger.v3.oas.annotations.parameters.RequestBody;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
@@ -60,7 +61,7 @@ public class HabitacionControllerV2 {
     }
 
     @PostMapping(produces = MediaTypes.HAL_JSON_VALUE)// Endpoint para crear una nueva habitación en formato HAL+JSON
-    public ResponseEntity<EntityModel<HabitacionResponseDTO>> crearHabitacion(@RequestBody HabitacionRequestDTO habitacionRequest) {
+    public ResponseEntity<EntityModel<HabitacionResponseDTO>> crearHabitacion(@Valid @RequestBody HabitacionRequestDTO habitacionRequest) {
 
         HabitacionResponseDTO nuevaHabitacion = habitacionService.guardar(habitacionRequest);
         return ResponseEntity
@@ -70,7 +71,7 @@ public class HabitacionControllerV2 {
     }
 
     @PutMapping(value = "/{id}", produces = MediaTypes.HAL_JSON_VALUE)// Endpoint para actualizar una habitación existente en formato HAL+JSON
-    public ResponseEntity<EntityModel<HabitacionResponseDTO>> actualizarHabitacion(@PathVariable Long id, @RequestBody HabitacionRequestDTO habitacionRequest) {
+    public ResponseEntity<EntityModel<HabitacionResponseDTO>> actualizarHabitacion(@PathVariable Long id, @Valid @RequestBody HabitacionRequestDTO habitacionRequest) {
         return habitacionService.actualizar(id, habitacionRequest)
                 .map(assembler::toModel)
                 .map(ResponseEntity::ok)
@@ -79,6 +80,9 @@ public class HabitacionControllerV2 {
 
     @DeleteMapping(value = "/{id}", produces = MediaTypes.HAL_JSON_VALUE)// Endpoint para eliminar una habitación por su ID en formato HAL+JSON
     public ResponseEntity<?> eliminarHabitacion(@PathVariable Long id) {
+        if (habitacionService.obtenerPorId(id).isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
         habitacionService.eliminar(id);
         return ResponseEntity.noContent().build();
     }

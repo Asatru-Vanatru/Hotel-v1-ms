@@ -1,0 +1,11 @@
+com\hotel\checkin\config\SwaggerConfig.class
+com\hotel\checkin\DataLoader.class
+com\hotel\checkin\model\CheckIn.class
+com\hotel\checkin\controller\CheckInController.class
+com\hotel\checkin\controller\CheckInControllerV2.class
+com\hotel\checkin\dto\CheckInRequestDTO.class
+com\hotel\checkin\assemblers\CheckInModelAssemblers.class
+com\hotel\checkin\CheckinApplication.class
+com\hotel\checkin\dto\CheckInResponseDTO.class
+com\hotel\checkin\repository\CheckInRepository.class
+com\hotel\checkin\service\CheckInService.class
