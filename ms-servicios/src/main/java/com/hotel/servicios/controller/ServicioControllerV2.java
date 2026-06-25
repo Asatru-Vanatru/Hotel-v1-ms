@@ -1,10 +1,9 @@
-﻿package com.hotel.servicios.controller;
+package com.hotel.servicios.controller;
 
 import com.hotel.servicios.assemblers.ServicioModelAssembler;
 import com.hotel.servicios.dto.ServicioRequestDTO;
 import com.hotel.servicios.dto.ServicioResponseDTO;
 import com.hotel.servicios.service.ServicioService;
-import lombok.RequiredArgsConstructor;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.MediaTypes;
@@ -20,11 +19,13 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
 
 @RestController
 @RequestMapping("/api/v2/servicios")
-@RequiredArgsConstructor
 public class ServicioControllerV2 {
 
-    private final ServicioService servicioService;
-    private final ServicioModelAssembler assembler;
+    
+    private ServicioService servicioService;
+
+    
+    private ServicioModelAssembler assembler;
 
     @GetMapping(produces = MediaTypes.HAL_JSON_VALUE)
     public CollectionModel<EntityModel<ServicioResponseDTO>> getAllServicios() {
